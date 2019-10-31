@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>展示学生信息</title>
+</head>
+<body>
+	<h3 align="center">展示学生信息</h3>
+	<table border="1" cellspacing="0" align="center">
+		<thead>
+			<tr>
+				<td width="100">学号</td>
+				<td width="100">姓名</td>
+				<td width="100">密码</td>
+				<td width="100">时间</td>
+			</tr>
+		</thead>
+		<tr th:each="user:${sysUserList}">
+			<td th:text="${user.id}"></td>
+			<td th:text="${user.username}"></td>
+			<td th:text="${user.password}"></td>
+			<td th:text="${user.ts}"></td>
+		</tr>
+	</table>
+	<div th:with="pageNext=${pageStart}+2,pagePre=${pageStart}-2">
+		<table align="center">
+			<tr>
+				<td><a th:href="@{'/sysuser/fenye?pageStart='+${pagePre}}">【上页】</a></td>
+				<td><a th:href="@{'/sysuser/fenye?pageStart='+${pageNext}}">【下页】</a></td>
+			</tr>
+		</table>
+
+	</div>
+
+</body>
+</html>

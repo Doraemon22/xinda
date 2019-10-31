@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 2.自定义映射器文件，只做查询 -->
+<mapper namespace="com.dt.cn.dao.mapper.ComovementMapper">
+	<select  id="findPorvince"  resultType="com.dt.cn.model.sysUser.Comovement">
+		SELECT pr_name FROM province
+	</select>
+	<select id="findCity"  parameterType="String"  resultType="com.dt.cn.model.sysUser.Comovement">
+		SELECT DISTINCT ci_name FROM province,
+		city  WHERE ci_pr=pr_id  AND pr_name=#{pr_name}
+	
+	</select>
+	<select id="findCounty" parameterType="String" resultType="com.dt.cn.model.sysUser.Comovement">
+	
+	SELECT DISTINCT co_name FROM city,county  WHERE co_ci=ci_id AND ci_name=#{ci_name}
+	</select>
+</mapper>

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="htttp://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script src="js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script>
+
+	$(function(){
+	
+		var pcount=$('#count').val();	
+		var strhtml="";
+	
+		for(var i=1;i<=pcount/2;i++){
+		
+			strhtml+='<span> <a href=/fanye?pageStart='+2*(i-1)+'>【'+i+'】</a></span>';
+		}
+
+		$("#mydiv").html(strhtml);
+
+	})();
+</script>
+</head>
+<body>
+
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+	<input type="hidden" th:value="${count}" id="count"/>
+	<h4 align="center">用户信息 query.html</h4>
+	<table border="1" cellspacing="0" align="center">
+		<thead>
+			<tr align="left">
+				<th width="100">序号</th>
+				<th width="100">用户名</th>
+				<th width="100">密码</th>
+				<th width="100"></th>
+			</tr>
+		</thead>
+		<tr th:each="czy,czyStat:${czys}">
+			<td th:text="${czy.id}"></td>
+			<td th:text="${czy.czyxm}"></td>
+			<td th:text="${czyStat.count}"></td>
+			<td><a th:href="@{'/delete?id='+${czy.id}}">删除</a></td>
+		</tr>
+	</table>
+	
+	<div align="center"
+		th:with="pageF=${pageStart}-2,pageN=${pageStart}+2,pageL=${count}-2,pageI=${count}/2">
+		<table>
+			<tr>
+				<td><span><a th:href="@{'/fanye?pageStart='+0}">【首页】</a></span> </td>
+				<td><span th:if=" ${pageF} ge '0'"><a th:href="@{'/fanye?pageStart='+${pageF}}">【上页】</a></span> </td>
+				<td><div id="mydiv"></div></td>
+				<td><span th:if="${pageN} le ${pageL}"><a th:href="@{'/fanye?pageStart='+${pageN}}">【下页】</a></span></td>
+				<td><span><a th:href="@{'/fanye?pageStart='+${pageL}}">【末页】</a></span></td>				
+			</tr>
+		</table>		
+	</div>	
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>hi</title>
+</head>
+<body>
+	欢迎进入登录页面！你,值得拥有！
+	<button onclick="linkto()">跳转用户信息页面</button>
+	<script type="text/javascript">
+		function linkto() {
+			//window.location.href = "/sysuser/delete";
+			window.location.href = "delete.html";
+		}
+	</script>
+
+	<form action="sysuser/selectSysUser">
+		username:<input type="text" name="username" /><br />
+		password:<input type="text" name="password" /><br />
+			 <input type="submit" value="登录" />
+	</form>
+</body>
+</html>
