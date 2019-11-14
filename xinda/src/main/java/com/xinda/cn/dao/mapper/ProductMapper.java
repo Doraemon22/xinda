@@ -58,7 +58,10 @@ public interface ProductMapper {
 	long getCount(String name);
 	//3.按主键id查询服务产品进行删除
 	int deleteByProKey(String id);  //xml没写
-
+	//4.根据id查询要修改的服务商产品
+		Product selectSproById(String id);
+	//5.修改服务商产品
+	int updateSproById(Product record);
 
 	
 }

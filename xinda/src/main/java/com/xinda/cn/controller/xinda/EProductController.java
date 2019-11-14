@@ -22,12 +22,13 @@ public class EProductController {
     ProductService productService;
 	@Resource   
 	ProductExample productExample;
-	
+	//desc
 	@ResponseBody
 	@RequestMapping(value = "/priceDesc", method = RequestMethod.POST)
-	public String priceDesc(Map<String,Object> map,
+	public Map<String,Object> priceDesc(
 			@RequestParam(defaultValue="0")int pageStart,
 			@RequestParam(defaultValue="2")Integer pageSize) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		List<Epro> priceDescPro=productService.showPriceDescPro(pageStart, pageSize);
 		System.out.println("降序产品======="+priceDescPro);
 		long n=0;
@@ -36,23 +37,24 @@ public class EProductController {
 			map.put("count",n);
 			map.put("pageStart", pageStart);
 			map.put("pageSize", pageSize);                                                                                                                                                                                                                                                                                                                                                             
-		return "e-commerce_product"; 
+		return map; 
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/priceAsc", method = RequestMethod.POST)
-	public String priceAsc(Map<String,Object> map,
+	public Map<String,Object> priceAsc(Map<String, Object> map,
 			@RequestParam(defaultValue="0")int pageStart,
 			@RequestParam(defaultValue="2")Integer pageSize) {
+		Map<String, Object> map2 = new HashMap<String, Object>();
 		List<Epro> priceAscPro=productService.showPriceAscPro(pageStart, pageSize);
 		System.out.println("升序产品======="+priceAscPro);
 		long n=0;
 		n=productService.count();
-			map.put("epro", priceAscPro);
+			map2.put("epro", priceAscPro);
 			map.put("count",n);
 			map.put("pageStart", pageStart);
 			map.put("pageSize", pageSize);
-		return "e-commerce_product";
+		return map2;
 	}
 	//1.电子商务  分页展示全部产品  product,provider表
 	@RequestMapping("/ePageProlist")

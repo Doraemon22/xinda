@@ -62,14 +62,16 @@
         <ul class="content-title">
             <li>商品</li>
             <li  >价格</li>
-        </ul>
+      </ul>
+              <div class = "eproduct">
+               </div>
         <hr color="#ededed" size="1">
         
       <form  action="findProByname">
             <div class="article"   th:each="pro :${epro}"> 
             <img src=""  alt="图片" /><!-- ${pro.image} -->
-         <!--    <img src="/eproimgshow?id=${eprolist[i].servProductid}" alt="图片" /> -->
-         <!--    <input id="pid"  type="hidden"  th:value="${pro.id}" /> -->
+           <!--  <img src="/eproimgshow?id=${eprolist[i].servProductid}" alt="图片" /> -->
+            <input id="pid"  type="hidden"  th:value="${pro.id}" />
             <ul class="article-info"  >
               			<li  th:text="${pro.name}" >名称</li>
                        <li  th:text="${pro.info}" >产品说明</li>
@@ -80,11 +82,8 @@
                 <li>
                     <a href="redirect?page=e-commerce_pay" >立即购买</a>
                       <a href="redirect?page=e-commerce_shoping-car" >加入购物车</a>
-                 <!--    <form action="addcar">
-                     <a href="redirect?page=e-commerce_shoping-car" >加入购物车</a>  可以不用表单，href  @GetMapping
-                    </form> -->
                 </li>
-                <!-- 	<li>
+              <!--   	<li>
 						<span onclick="just_buy('${eprolist[i].servProductid}','${providerid}','${eprolist[i].servPrice}')">立即购买</span>
             			<span onclick="add_cart('${eprolist[i].servProductid}','${providerid}','${eprolist[i].servPrice}')">加入购物车</span>
 					</li> -->

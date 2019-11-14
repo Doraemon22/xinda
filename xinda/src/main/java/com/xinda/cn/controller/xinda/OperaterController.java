@@ -28,7 +28,7 @@ public class OperaterController {
 		
 		return "operator_product";
 	}
-	//运营商订单页按业务订单号模糊分页查询
+	//
 	@RequestMapping("/findOperByno")
 	public String findOperByno(Map<String,Object> map,
 			@RequestParam(defaultValue="0")int pageStart,

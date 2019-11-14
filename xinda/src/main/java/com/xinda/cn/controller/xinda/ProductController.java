@@ -1,6 +1,7 @@
 package com.xinda.cn.controller.xinda;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.xinda.cn.model.xinda.Product;
 import com.xinda.cn.model.xinda.ProductExample;
@@ -24,6 +27,8 @@ public class ProductController {
     ProductService productService;
 	@Resource   
 	ProductExample productExample;
+//	@Resource
+//	ModelAndView ModelAndView;
 	
 //	//电子商务  展示所有商品  没公司
 //	@RequestMapping("/eLogin")
@@ -39,10 +44,10 @@ public class ProductController {
 	public String showProduct(Map<String,Object> map,Product pro,Model model) {
 		int i=productService.addProduct(pro);
 		if(i==1) {
-			return "service_product";//redirect:..service_product2.html   service_product2
+			return "redirect:/findSproByName";
 		}else {
 			model.addAttribute("message","不好意思哈，插入失败！");
-			return "error2";
+			return "error";
 		}
 	}
 	
@@ -74,14 +79,52 @@ public class ProductController {
 			map.put("name", name);
 			return "service_product";
 		}
-		//待完成
+		//删除服务商产品
 		@RequestMapping("/deleteSproById")
 		public String deleteByPrimaryKey(String id) {
 			int i=productService.deleteByProKey(id);
-			if(i==1) {
-				return "service_product";
-			}
-			return "error";
+			System.out.println("删除"+id);			
 			
+			if(i==1) {
+				System.out.println(i);
+				return "redirect:/findSproByName";
+				// ModelAndView modelAndView = new ModelAndView("/service_product");
+				 //return new ModelAndView "redirect:/service_product.html";
+			}
+			//return new ModelAndView "redirect:/error.html";
+			return "error";
+		}
+		//按id查询要修改的服务商产品信息
+//		@ResponseBody
+//		@RequestMapping("/updateSproQ")
+//		public Map<String,Object> updateSproQ(String id) {
+//			Product product=productService.selectSproById(id);
+//			System.out.println("编辑"+id);
+//			Map<String,Object> map=new HashMap<String,Object>();
+//			map.put("product", product);
+//			//返回重定向的页面
+//			return map;
+//		}
+		
+		@RequestMapping("/updateSproQ")
+		public String updateSproQ(String id,Model model){
+			Product product=productService.selectSproById(id);
+			System.out.println("查找修改"+id);
+		    model.addAttribute("product",product);
+			return "update_product";
+		}
+		
+		//修改产品信息
+		@RequestMapping("/updateSpro")
+		public String updateSpro(Map<String,Object> map,Product product,Model model) {
+			
+			int i=productService.updateSproById(product);
+			System.out.println("修改"+i);
+			if(i==1) {
+				return "redirect:/findSproByName";
+			}else {
+				model.addAttribute("message","不好意思哈，插入失败！");
+				return "error";
+			}
 		}
 }
