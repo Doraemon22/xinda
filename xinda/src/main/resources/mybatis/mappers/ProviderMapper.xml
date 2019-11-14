@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinda.cn.dao.mapper.ProviderMapper">
+  <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.Provider">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TYPE" jdbcType="INTEGER" property="type" />
+    <result column="pcode" jdbcType="INTEGER" property="pcode" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="PROVIDER_INFO" jdbcType="VARCHAR" property="providerInfo" />
+    <result column="CELLPHONE" jdbcType="VARCHAR" property="cellphone" />
+    <result column="LOGIN_ID" jdbcType="VARCHAR" property="loginId" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="REGION_ID" jdbcType="VARCHAR" property="regionId" />
+    <result column="REGISTER_TIME" jdbcType="DATE" property="registerTime" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="AUTH_FILE" jdbcType="VARCHAR" property="authFile" />
+    <result column="WEIXIN" jdbcType="VARCHAR" property="weixin" />
+    <result column="QQ" jdbcType="VARCHAR" property="qq" />
+    <result column="WORK_TIME" jdbcType="VARCHAR" property="workTime" />
+    <result column="EMALL" jdbcType="VARCHAR" property="emall" />
+    <result column="RECOMMEND" jdbcType="INTEGER" property="recommend" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xinda.cn.model.xinda.Provider">
+    <result column="PROVIDER_IMG" jdbcType="LONGVARBINARY" property="providerImg" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, TYPE, pcode, sname, PROVIDER_INFO, CELLPHONE, LOGIN_ID, PASSWORD, REGION_ID, 
+    REGISTER_TIME, STATUS, AUTH_FILE, WEIXIN, QQ, WORK_TIME, EMALL, RECOMMEND
+  </sql>
+  <sql id="Blob_Column_List">
+    PROVIDER_IMG
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xinda.cn.model.xinda.ProviderExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from provider
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xinda.cn.model.xinda.ProviderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from provider
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from provider
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from provider
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.cn.model.xinda.ProviderExample">
+    delete from provider
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.cn.model.xinda.Provider">
+    insert into provider (ID, TYPE, pcode, 
+      sname, PROVIDER_INFO, CELLPHONE, 
+      LOGIN_ID, PASSWORD, REGION_ID, 
+      REGISTER_TIME, STATUS, AUTH_FILE, 
+      WEIXIN, QQ, WORK_TIME, 
+      EMALL, RECOMMEND, PROVIDER_IMG
+      )
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{pcode,jdbcType=INTEGER}, 
+      #{sname,jdbcType=VARCHAR}, #{providerInfo,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, 
+      #{loginId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{regionId,jdbcType=VARCHAR}, 
+      #{registerTime,jdbcType=DATE}, #{status,jdbcType=INTEGER}, #{authFile,jdbcType=VARCHAR}, 
+      #{weixin,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{workTime,jdbcType=VARCHAR}, 
+      #{emall,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, #{providerImg,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.cn.model.xinda.Provider">
+    insert into provider
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="pcode != null">
+        pcode,
+      </if>
+      <if test="sname != null">
+        sname,
+      </if>
+      <if test="providerInfo != null">
+        PROVIDER_INFO,
+      </if>
+      <if test="cellphone != null">
+        CELLPHONE,
+      </if>
+      <if test="loginId != null">
+        LOGIN_ID,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="regionId != null">
+        REGION_ID,
+      </if>
+      <if test="registerTime != null">
+        REGISTER_TIME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="authFile != null">
+        AUTH_FILE,
+      </if>
+      <if test="weixin != null">
+        WEIXIN,
+      </if>
+      <if test="qq != null">
+        QQ,
+      </if>
+      <if test="workTime != null">
+        WORK_TIME,
+      </if>
+      <if test="emall != null">
+        EMALL,
+      </if>
+      <if test="recommend != null">
+        RECOMMEND,
+      </if>
+      <if test="providerImg != null">
+        PROVIDER_IMG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="pcode != null">
+        #{pcode,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="providerInfo != null">
+        #{providerInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginId != null">
+        #{loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null">
+        #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="authFile != null">
+        #{authFile,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null">
+        #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null">
+        #{workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="emall != null">
+        #{emall,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=INTEGER},
+      </if>
+      <if test="providerImg != null">
+        #{providerImg,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.cn.model.xinda.ProviderExample" resultType="java.lang.Long">
+    select count(*) from provider
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update provider
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        TYPE = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.pcode != null">
+        pcode = #{record.pcode,jdbcType=INTEGER},
+      </if>
+      <if test="record.sname != null">
+        sname = #{record.sname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.providerInfo != null">
+        PROVIDER_INFO = #{record.providerInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null">
+        CELLPHONE = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginId != null">
+        LOGIN_ID = #{record.loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regionId != null">
+        REGION_ID = #{record.regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registerTime != null">
+        REGISTER_TIME = #{record.registerTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.authFile != null">
+        AUTH_FILE = #{record.authFile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixin != null">
+        WEIXIN = #{record.weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null">
+        QQ = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workTime != null">
+        WORK_TIME = #{record.workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emall != null">
+        EMALL = #{record.emall,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommend != null">
+        RECOMMEND = #{record.recommend,jdbcType=INTEGER},
+      </if>
+      <if test="record.providerImg != null">
+        PROVIDER_IMG = #{record.providerImg,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update provider
+    set ID = #{record.id,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=INTEGER},
+      pcode = #{record.pcode,jdbcType=INTEGER},
+      sname = #{record.sname,jdbcType=VARCHAR},
+      PROVIDER_INFO = #{record.providerInfo,jdbcType=VARCHAR},
+      CELLPHONE = #{record.cellphone,jdbcType=VARCHAR},
+      LOGIN_ID = #{record.loginId,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      REGION_ID = #{record.regionId,jdbcType=VARCHAR},
+      REGISTER_TIME = #{record.registerTime,jdbcType=DATE},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      AUTH_FILE = #{record.authFile,jdbcType=VARCHAR},
+      WEIXIN = #{record.weixin,jdbcType=VARCHAR},
+      QQ = #{record.qq,jdbcType=VARCHAR},
+      WORK_TIME = #{record.workTime,jdbcType=VARCHAR},
+      EMALL = #{record.emall,jdbcType=VARCHAR},
+      RECOMMEND = #{record.recommend,jdbcType=INTEGER},
+      PROVIDER_IMG = #{record.providerImg,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update provider
+    set ID = #{record.id,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=INTEGER},
+      pcode = #{record.pcode,jdbcType=INTEGER},
+      sname = #{record.sname,jdbcType=VARCHAR},
+      PROVIDER_INFO = #{record.providerInfo,jdbcType=VARCHAR},
+      CELLPHONE = #{record.cellphone,jdbcType=VARCHAR},
+      LOGIN_ID = #{record.loginId,jdbcType=VARCHAR},
+      PASSWORD = #{record.password,jdbcType=VARCHAR},
+      REGION_ID = #{record.regionId,jdbcType=VARCHAR},
+      REGISTER_TIME = #{record.registerTime,jdbcType=DATE},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      AUTH_FILE = #{record.authFile,jdbcType=VARCHAR},
+      WEIXIN = #{record.weixin,jdbcType=VARCHAR},
+      QQ = #{record.qq,jdbcType=VARCHAR},
+      WORK_TIME = #{record.workTime,jdbcType=VARCHAR},
+      EMALL = #{record.emall,jdbcType=VARCHAR},
+      RECOMMEND = #{record.recommend,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.cn.model.xinda.Provider">
+    update provider
+    <set>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="pcode != null">
+        pcode = #{pcode,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="providerInfo != null">
+        PROVIDER_INFO = #{providerInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null">
+        CELLPHONE = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginId != null">
+        LOGIN_ID = #{loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null">
+        REGION_ID = #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        REGISTER_TIME = #{registerTime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="authFile != null">
+        AUTH_FILE = #{authFile,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null">
+        WEIXIN = #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null">
+        QQ = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="workTime != null">
+        WORK_TIME = #{workTime,jdbcType=VARCHAR},
+      </if>
+      <if test="emall != null">
+        EMALL = #{emall,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        RECOMMEND = #{recommend,jdbcType=INTEGER},
+      </if>
+      <if test="providerImg != null">
+        PROVIDER_IMG = #{providerImg,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xinda.cn.model.xinda.Provider">
+    update provider
+    set TYPE = #{type,jdbcType=INTEGER},
+      pcode = #{pcode,jdbcType=INTEGER},
+      sname = #{sname,jdbcType=VARCHAR},
+      PROVIDER_INFO = #{providerInfo,jdbcType=VARCHAR},
+      CELLPHONE = #{cellphone,jdbcType=VARCHAR},
+      LOGIN_ID = #{loginId,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      REGION_ID = #{regionId,jdbcType=VARCHAR},
+      REGISTER_TIME = #{registerTime,jdbcType=DATE},
+      STATUS = #{status,jdbcType=INTEGER},
+      AUTH_FILE = #{authFile,jdbcType=VARCHAR},
+      WEIXIN = #{weixin,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      WORK_TIME = #{workTime,jdbcType=VARCHAR},
+      EMALL = #{emall,jdbcType=VARCHAR},
+      RECOMMEND = #{recommend,jdbcType=INTEGER},
+      PROVIDER_IMG = #{providerImg,jdbcType=LONGVARBINARY}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.cn.model.xinda.Provider">
+    update provider
+    set TYPE = #{type,jdbcType=INTEGER},
+      pcode = #{pcode,jdbcType=INTEGER},
+      sname = #{sname,jdbcType=VARCHAR},
+      PROVIDER_INFO = #{providerInfo,jdbcType=VARCHAR},
+      CELLPHONE = #{cellphone,jdbcType=VARCHAR},
+      LOGIN_ID = #{loginId,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      REGION_ID = #{regionId,jdbcType=VARCHAR},
+      REGISTER_TIME = #{registerTime,jdbcType=DATE},
+      STATUS = #{status,jdbcType=INTEGER},
+      AUTH_FILE = #{authFile,jdbcType=VARCHAR},
+      WEIXIN = #{weixin,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      WORK_TIME = #{workTime,jdbcType=VARCHAR},
+      EMALL = #{emall,jdbcType=VARCHAR},
+      RECOMMEND = #{recommend,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

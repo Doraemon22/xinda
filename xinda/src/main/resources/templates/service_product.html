@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/service_product.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/element-ui_2.12.0.css">
+
+    <script src="./js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+	<input type="hidden" th:value="${count}" id="count"/>
+	<input type="hidden" th:value="${pageSize}" id="pageSize"/>
+	<input type="hidden" th:value="${pageStart}" id="pageStart"/>
+    <div class="header">
+        <div class="logo_info">
+            <img src="./images/logo.png" alt="logo">
+            <span class="platform_name">信达</span>
+        </div>
+        <ul class="user_info">
+            <li><a th:href="@{/findSproByName}"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
+            <li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
+            <li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>
+            <li>
+                <img src="./images/default_user.png">
+                <span>用户名字</span>
+                <i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
+                <ul class="dropdown">
+                    <li>更改信息</li>
+                    <li>退出登录</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <ul class="main-nav">
+            <li>
+                <a href="#">
+                    <i class="fa fa-home fa-fw"></i>
+                    <p>主页</p>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/findSOrdByName}">
+                    <i class="fa fa-shopping-cart fa-fw"></i>
+                    <p>订单</p>
+                </a>
+            </li>
+            <li>
+                <a href="redirect?page=service_expenses.html">
+                    <i class="fa fa-cny fa-fw"></i>
+                    <p>费用</p>
+                </a>
+            </li>
+            <li>
+                <a href="redirect?page=service_store.html">
+                    <i class="fa fa-institution fa-fw"></i>
+                    <p>店铺</p>
+                </a>
+            </li>
+            <li>
+                <a href="redirect?page=service_setting.html">
+                    <i class="fa fa-cog fa-fw"></i>
+                    <p>设置</p>
+                </a>
+            </li>
+        </ul>
+        <div class="main-details">
+            <div class="main-top">
+                <ul>
+                    <li>
+                        <i class="fa fa-home fa-fw"></i>
+                    </li>
+                    <li>服务管理</li>
+                </ul>
+            </div>
+            <ul class="main-tab">
+                <li class="border-red business-order">产品列表</li>
+            </ul>
+            <div class="main-content">
+                <div class="search">
+                <input placeholder="服务名称"  name="name" id="name" th:value="${name}"/>
+                   <span class="search-btn"><button ><i class="fa fa-search fa-fw"></i></button></span>
+                </div>
+                <div class="product-action">
+                    <span class="add-product-action"><i class="fa fa-plus fa-fw"></i>添加服务产品</span>
+                </div>
+            </div>
+        <form action="findSproByName">   <!--============= 显示所有产品的表单= 名称，内容，价格============= -->
+            <table border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr >
+                        <th  width="30">服务名称</th>
+                        <th width="200">服务内容</th>
+                        <th width="100">价格</th>
+                        <th  width="100">状态</th>
+                        <th  width="150">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr th:each="pro :${product}" >
+                        <td  th:text="${pro.name}" >服务名称</td>
+                        <td  th:text="${pro.info}" >服务内容</td>
+                        <td th:text="${pro.mapketPrice}"  >价格</td>
+                        <td><span class="down-line-mark down-line-mark-orange">下线</span></td>
+                        <td>
+                            <span class="handle-btn"><i class="fa fa-edit fa-fw"></i>编辑</span>
+                            <span class="delete-btn"><button><i class="fa fa-close fa-fw"></i>删除</button></span>
+                            <span class="handle-btn"><i class="fa fa-arrow-up fa-fw"></i>上线</span>
+                        </td>
+                    </tr>
+<table border="0" cellspacing="0" cellpadding="0">                
+ <div class="main-pagination" 
+    	            th:with="pageNext=${pageStart}+${pageSize},
+			       pagePre=${pageStart}-${pageSize},
+					modPage=${count}%${pageSize},
+					Pagelast=${count}-${modPage},
+					lastPage=${count}-${pageSize}">
+		<ul class="pagination">
+								<span><a th:href="@{'/findSproByName?pageStart=' + 0+'&name='+${name}}">首页</a></span>
+                    			<span th:if="${pagePre} ge '0'"><a th:href="@{'/findSproByName?pageStart='+${pagePre}+'&name='+${name}}">上一页</a></span>
+                    			<span class="main-pagination-page"><div id="mydiv"></div></span>                			
+                    			<span th:if="${pageNext} lt ${count}"><a th:href="@{'/findSproByName?pageStart='+${pageNext}+'&name='+${name}}">下一页</a></span>
+                    			<span th:if="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${lastPage}+'&name='+${name}}">末页</a></span>
+                    			<span th:unless="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${Pagelast}+'&name='+${name}}">末页</a></span>
+		</ul>
+		<ul class="pagination">
+		<li>共<span th:text="${count}"></span>条记录</li>
+		
+		</ul >
+                    		</div> 
+                    		</table>                          
+              <!--       <tr>
+                       
+                        <td><span class="up-line-mark up-line-mark-red">在线</span></td>
+                        <td><span class="handle-btn"><i class="fa fa-arrow-down fa-fw"></i>下线</span></td>
+                    </tr> -->            
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+     <form action="addProduct">
+    <div class="masking">
+        <div class="scroller">
+            <h3>添加服务产品</h3>
+            <ul>
+                <li>
+                    <span>图片简介</span>
+                    <button>选择图片</button>
+                </li>
+                  <li>
+                    <span>编号</span>
+                    <input placeholder="请输入服务编号"  name="id"/>
+                </li>
+                <li>
+                    <span>服务名称</span>
+                    <input placeholder="请输入服务名称"  name="name"/>
+                </li>
+                <li>
+                    <span class="ver-top">服务说明</span>
+                    <textarea name="info" id="" cols="45" rows="7"></textarea>
+                </li>
+                <li>
+                    <span>服务价格</span>
+                    <input type="number" placeholder="请输入服务价格" name="mapketPrice"/>
+                </li>
+            </ul>
+           
+            <button class="save">提交</button>
+
+            <button class="cancel">取消</button>
+        </div>
+    </div>         
+   </form>
+    <script src="./js/service_product.js"></script>
+</body>
+
+</html>

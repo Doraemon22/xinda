@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<link rel="stylesheet" href="./css/public.css">
+<link rel="stylesheet" href="./css/header.css">
+<link rel="stylesheet" href="./css/service_orderform.css">
+<link rel="stylesheet" href="./css/font-awesome.min.css">
+<link rel="stylesheet" href="./css/element-ui_2.12.0.css">
+<script src="./js/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+	<div class="header">
+		<div class="logo_info">
+			<img src="./images/logo.png" alt="logo"> <span
+				class="platform_name">信达</span>
+		</div>
+		<ul class="user_info">
+			<li><a th:href="@{/findSproByName}"><i
+					class="fa fa-cog fa-fw"></i>服务管理</a></li>
+			<li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
+			<li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>
+			<li><img src="./images/default_user.png"> <span>用户名字</span>
+				<i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
+				<ul class="dropdown">
+					<li>更改信息</li>
+					<li>退出登录</li>
+				</ul></li>
+		</ul>
+	</div>
+	<div class="main">
+		<ul class="main-nav">
+			<li><a href="#"> <i class="fa fa-home fa-fw"></i>
+					<p>主页</p>
+			</a></li>
+			<li class="bg-red"><a th:href="@{/findSOrdByName}"> <i
+					class="fa fa-shopping-cart fa-fw"></i>
+					<p>订单</p>
+			</a></li>
+			<li><a href="redirect?page=service_expenses.html"> <i
+					class="fa fa-cny fa-fw"></i>
+					<p>费用</p>
+			</a></li>
+			<li><a href="redirect?page=service_store.html"> <i
+					class="fa fa-institution fa-fw"></i>
+					<p>店铺</p>
+			</a></li>
+			<li><a href="redirect?page=service_setting.html"> <i
+					class="fa fa-cog fa-fw"></i>
+					<p>设置</p>
+			</a></li>
+		</ul>
+		<div class="main-details">
+			<div class="main-top">
+				<ul>
+					<li><i class="fa fa-home fa-fw"></i></li>
+					<li>订单</li>
+				</ul>
+			</div>
+			<ul class="main-tab">
+				<li class="border-red order1">服务中</li>
+				<li class="order2">已完成</li>
+			</ul>
+			<div class="main-content">
+				<div class="search">
+					<form action="findSOrdByName">
+						<input placeholder="请输入服务名称查询" type="text" name="serviceName"
+							th:value="${serviceName}" id="serviceName" />
+						<button>
+							<i class="fa fa-search fa-fw"></i>
+						</button>
+					</form>
+					<input type="hidden" th:value="${count}" id="count" /> 
+					<input type="hidden" th:value="${pageSize}" id="pageSize" /> 
+					<input type="hidden" th:value="${pageStart}" id="pageStart" />
+				</div>
+			</div>
+			<table border="0" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th width="150">服务订单编号</th>
+						<th width="150">服务名称</th>
+						<th width="150">客户名称</th>
+						<th width="150">联系电话</th>
+						<th width="150">购买数量</th>
+						<th width="150">总费用</th>
+						<th width="150">创建时间</th>
+						<th width="150">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user:${sysUserList}">
+						<td><span th:text="${user.service_no}"></span></td>
+						<td><span th:text="${user.service_name}"></span></td>
+						<td><span th:text="${user.name}"></span></td>
+						<td><span th:text="${user.cellphone}"></span></td>
+						<td><span th:text="${user.buy_num}"></span></td>
+						<td><span th:text="${user.total_price}"></span></td>
+						<td><span th:text="${user.create_time}"></span></td>
+						<td><span class="handle-btn"><i
+								class="fa fa-edit fa-fw"></i>详情</span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="center"
+				th:with="pageNext=${pageStart}+${pageSize},
+		pagePre=${pageStart}-${pageSize},
+		modPage=${count}%${pageSize},
+		pageLast=${count}-${modPage},
+		lastPage=${count}-${pageSize}">
+				<!-- th:style  pageL=${count}-${count}%${pageSize} -->
+				<ul class="pagination">
+					<!-- th:each -->
+					<li><a th:href="@{'/findSOrdByName?pageStart=' + 0}">首页</a></li>
+					<li><span th:if="${pagePre} ge '0'"><a
+							th:href="@{'/findSOrdByName?pageStart=' + ${pagePre}+'&serviceName='+${serviceName}}">«</a></span></li>
+					<li><div id="mydiv"></div></li>
+					<!-- <li><a th:href="@{'/findSOrdByName?pageStart=' + ${pageSize}*0}">1</a></li> -->
+					<li><span th:if="${pageNext} lt ${count}"><a
+							th:href="@{'/findSOrdByName?pageStart=' + ${pageNext}+'&serviceName='+${serviceName}}">»</a></span></li>
+					<li><span th:if="${modPage} eq '0'"><a
+							th:href="@{'/findSOrdByName?pageStart=' + ${lastPage}+'&serviceName='+${serviceName}}">末页</a></span></li>
+					<li><span th:unless="${modPage} eq '0'"><a
+							th:href="@{'/findSOrdByName?pageStart=' + ${pageLast}+'&serviceName='+${serviceName}}">末页</a></span></li>
+				</ul>
+			</div>
+			<div class="main-sercive">根据不同order点击的返回值进行渲染，不需要多个界面来回展示，</div>
+		</div>
+	</div>
+	<script src="./js/service_orderform.js"></script>
+</body>
+
+</html>
