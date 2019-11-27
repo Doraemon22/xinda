@@ -2,16 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinda.cn.dao.mapper.CartMapper">
   <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.Cart">
-    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ID" jdbcType="VARCHAR" property="id" />
     <result column="E_ID" jdbcType="VARCHAR" property="eId" />
     <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
-    <result column="SERVICE_ID" jdbcType="VARCHAR" property="serviceId" />
-    <result column="SERVICE_NAME" jdbcType="VARCHAR" property="serviceName" />
-    <result column="SERVICE_INFO" jdbcType="VARCHAR" property="serviceInfo" />
-    <result column="TOTAL_PRICE" jdbcType="INTEGER" property="totalPrice" />
-    <result column="SERVICE_REQUESR" jdbcType="VARCHAR" property="serviceRequesr" />
-    <result column="PROVIDER_ID" jdbcType="VARCHAR" property="providerId" />
-    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="NUM" jdbcType="VARCHAR" property="num" />
+    <result column="TOTAL_PRICE" jdbcType="VARCHAR" property="totalPrice" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,9 +67,37 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ID, E_ID, PRODUCT_ID, SERVICE_ID, SERVICE_NAME, SERVICE_INFO, TOTAL_PRICE, SERVICE_REQUESR, 
-    PROVIDER_ID, UNIT
+    ID, E_ID, PRODUCT_ID, NUM, TOTAL_PRICE
   </sql>
+  <!-- ============showCartProList=========== -->
+ <select  id="showCartProList" parameterType="map" resultType="com.xinda.cn.vo.ECart">
+  	select  * 
+  	from cart,product p,provider p1
+    	where product_id=p.id and code=p1.id
+  		
+  		<if test="example.pageStart>=0">
+  		  limit #{example.pageStart},#{example.pageSize}
+  		</if> 
+  		<if test="example.orderByClause!=null">
+  			order by #{example.orderByClause}
+  		</if>
+  </select>
+    <update id="updateCarInfoById"  parameterType="java.lang.String"   >
+    update    cart
+     <set>
+     TOTAL_PRICE = #{money,jdbcType=VARCHAR},
+       NUM = #{pnum,jdbcType=VARCHAR}
+     </set>  
+    	where id=${cartid}
+  </update>
+  
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cart
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <!-- ===================完！==================== -->
+  
+  
   <select id="selectByExample" parameterType="com.xinda.cn.model.xinda.CartExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -89,16 +112,6 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cart
-    where ID = #{id,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from cart
-    where ID = #{id,jdbcType=VARCHAR}
-  </delete>
   <delete id="deleteByExample" parameterType="com.xinda.cn.model.xinda.CartExample">
     delete from cart
     <if test="_parameter != null">
@@ -107,13 +120,9 @@
   </delete>
   <insert id="insert" parameterType="com.xinda.cn.model.xinda.Cart">
     insert into cart (ID, E_ID, PRODUCT_ID, 
-      SERVICE_ID, SERVICE_NAME, SERVICE_INFO, 
-      TOTAL_PRICE, SERVICE_REQUESR, PROVIDER_ID, 
-      UNIT)
+      NUM, TOTAL_PRICE)
     values (#{id,jdbcType=VARCHAR}, #{eId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
-      #{serviceId,jdbcType=VARCHAR}, #{serviceName,jdbcType=VARCHAR}, #{serviceInfo,jdbcType=VARCHAR}, 
-      #{totalPrice,jdbcType=INTEGER}, #{serviceRequesr,jdbcType=VARCHAR}, #{providerId,jdbcType=VARCHAR}, 
-      #{unit,jdbcType=VARCHAR})
+      #{num,jdbcType=VARCHAR}, #{totalPrice,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.xinda.cn.model.xinda.Cart">
     insert into cart
@@ -127,26 +136,11 @@
       <if test="productId != null">
         PRODUCT_ID,
       </if>
-      <if test="serviceId != null">
-        SERVICE_ID,
-      </if>
-      <if test="serviceName != null">
-        SERVICE_NAME,
-      </if>
-      <if test="serviceInfo != null">
-        SERVICE_INFO,
+      <if test="num != null">
+        NUM,
       </if>
       <if test="totalPrice != null">
         TOTAL_PRICE,
-      </if>
-      <if test="serviceRequesr != null">
-        SERVICE_REQUESR,
-      </if>
-      <if test="providerId != null">
-        PROVIDER_ID,
-      </if>
-      <if test="unit != null">
-        UNIT,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -159,26 +153,11 @@
       <if test="productId != null">
         #{productId,jdbcType=VARCHAR},
       </if>
-      <if test="serviceId != null">
-        #{serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceName != null">
-        #{serviceName,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceInfo != null">
-        #{serviceInfo,jdbcType=VARCHAR},
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
       </if>
       <if test="totalPrice != null">
-        #{totalPrice,jdbcType=INTEGER},
-      </if>
-      <if test="serviceRequesr != null">
-        #{serviceRequesr,jdbcType=VARCHAR},
-      </if>
-      <if test="providerId != null">
-        #{providerId,jdbcType=VARCHAR},
-      </if>
-      <if test="unit != null">
-        #{unit,jdbcType=VARCHAR},
+        #{totalPrice,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -200,26 +179,11 @@
       <if test="record.productId != null">
         PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
       </if>
-      <if test="record.serviceId != null">
-        SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.serviceName != null">
-        SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.serviceInfo != null">
-        SERVICE_INFO = #{record.serviceInfo,jdbcType=VARCHAR},
+      <if test="record.num != null">
+        NUM = #{record.num,jdbcType=VARCHAR},
       </if>
       <if test="record.totalPrice != null">
-        TOTAL_PRICE = #{record.totalPrice,jdbcType=INTEGER},
-      </if>
-      <if test="record.serviceRequesr != null">
-        SERVICE_REQUESR = #{record.serviceRequesr,jdbcType=VARCHAR},
-      </if>
-      <if test="record.providerId != null">
-        PROVIDER_ID = #{record.providerId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.unit != null">
-        UNIT = #{record.unit,jdbcType=VARCHAR},
+        TOTAL_PRICE = #{record.totalPrice,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -231,61 +195,10 @@
     set ID = #{record.id,jdbcType=VARCHAR},
       E_ID = #{record.eId,jdbcType=VARCHAR},
       PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
-      SERVICE_ID = #{record.serviceId,jdbcType=VARCHAR},
-      SERVICE_NAME = #{record.serviceName,jdbcType=VARCHAR},
-      SERVICE_INFO = #{record.serviceInfo,jdbcType=VARCHAR},
-      TOTAL_PRICE = #{record.totalPrice,jdbcType=INTEGER},
-      SERVICE_REQUESR = #{record.serviceRequesr,jdbcType=VARCHAR},
-      PROVIDER_ID = #{record.providerId,jdbcType=VARCHAR},
-      UNIT = #{record.unit,jdbcType=VARCHAR}
+      NUM = #{record.num,jdbcType=VARCHAR},
+      TOTAL_PRICE = #{record.totalPrice,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.cn.model.xinda.Cart">
-    update cart
-    <set>
-      <if test="eId != null">
-        E_ID = #{eId,jdbcType=VARCHAR},
-      </if>
-      <if test="productId != null">
-        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceId != null">
-        SERVICE_ID = #{serviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceName != null">
-        SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceInfo != null">
-        SERVICE_INFO = #{serviceInfo,jdbcType=VARCHAR},
-      </if>
-      <if test="totalPrice != null">
-        TOTAL_PRICE = #{totalPrice,jdbcType=INTEGER},
-      </if>
-      <if test="serviceRequesr != null">
-        SERVICE_REQUESR = #{serviceRequesr,jdbcType=VARCHAR},
-      </if>
-      <if test="providerId != null">
-        PROVIDER_ID = #{providerId,jdbcType=VARCHAR},
-      </if>
-      <if test="unit != null">
-        UNIT = #{unit,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xinda.cn.model.xinda.Cart">
-    update cart
-    set E_ID = #{eId,jdbcType=VARCHAR},
-      PRODUCT_ID = #{productId,jdbcType=VARCHAR},
-      SERVICE_ID = #{serviceId,jdbcType=VARCHAR},
-      SERVICE_NAME = #{serviceName,jdbcType=VARCHAR},
-      SERVICE_INFO = #{serviceInfo,jdbcType=VARCHAR},
-      TOTAL_PRICE = #{totalPrice,jdbcType=INTEGER},
-      SERVICE_REQUESR = #{serviceRequesr,jdbcType=VARCHAR},
-      PROVIDER_ID = #{providerId,jdbcType=VARCHAR},
-      UNIT = #{unit,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -14,30 +14,30 @@
 </head>
 
 <body>
-    <div class="content width1200">
+    <div class="content width1200"   th:each="pro:${bPro}">
         <p class="product_num font-aqua">订单详情</p>
         <hr color="#ededed" size="1">
-        <ul class="merchandise">
+        <ul class="merchandise" >
             <li>
-                订单编号：<span class="font-aqua">S170604003104018018</span>
+                订单编号：<span class="orderId"  th:text="${pro.id}" >
             </li>
-            <li>创建时间：2017-08-18 22:21:23</li>
-            <li>订单明细：代理记账（一年）*1</li>
-            <li>订单总额：¥500.00</li>
+            <li>创建时间：<span th:text="${pro.createTime}" ></li>
+            <li>订单明细：<span th:text="${pro.orderInfo}" ></span></li>
+            <li>订单总额：¥<span th:text="${pro.totalPrice}" ></span></li>
         </ul>
         <p class="product_num font-aqua">支付方式</p>
         <hr color="#ededed" size="1">
         <p class="font-size14">非网银支付</p>
         <img src="./images/yinlian.png" alt="">
-        <input class="radio radio1" type="radio" name="pay">
+        <input class="radio radio1" type="radio" name="pay"  value=1>
         <p class="font-size14">平台支付</p>
         <img src="./images/weixin.png" alt="">
-        <input class="radio radio2" type="radio" name="pay">
+        <input class="radio radio2" type="radio" name="pay"  value=2>
         <img src="./images/zhifubao.png" alt="">
-        <input class="radio radio3" type="radio" name="pay">
+        <input class="radio radio3" type="radio" name="pay"  value=3>
         <ul class="payment">
-            <li>金额总计：<span>¥10200.00</span></li>
-               <a href="redirect?page=e-commerce_order" ><li>支付</li></a>
+            <li>金额总计：<span>订单总额：¥<span th:text="${pro.totalPrice}" ></span></span></li>
+            <li>支付</li>
         </ul>
     </div>
     <script src="./js/e-commerce_pay.js"></script>

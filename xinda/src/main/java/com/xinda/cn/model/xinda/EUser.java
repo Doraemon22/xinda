@@ -11,11 +11,9 @@ public class EUser {
 
     private String name;
 
-    private Integer sex;
+    private String sex;
 
     private String cellphone;
-
-    private String headImg;
 
     private Date registerTime;
 
@@ -26,6 +24,8 @@ public class EUser {
     private Date lastLoginTime;
 
     private String regionId;
+
+    private byte[] headImg;
 
     public String getId() {
         return id;
@@ -59,12 +59,12 @@ public class EUser {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
     }
 
     public String getCellphone() {
@@ -73,14 +73,6 @@ public class EUser {
 
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone == null ? null : cellphone.trim();
-    }
-
-    public String getHeadImg() {
-        return headImg;
-    }
-
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg == null ? null : headImg.trim();
     }
 
     public Date getRegisterTime() {
@@ -121,5 +113,13 @@ public class EUser {
 
     public void setRegionId(String regionId) {
         this.regionId = regionId == null ? null : regionId.trim();
+    }
+
+    public byte[] getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(byte[] headImg) {
+        this.headImg = headImg;
     }
 }

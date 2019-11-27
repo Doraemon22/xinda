@@ -1,5 +1,7 @@
 package com.xinda.cn.dao.mapper;
 
+import com.xinda.cn.model.xinda.EUser;
+import com.xinda.cn.model.xinda.EUserExample;
 import com.xinda.cn.model.xinda.Sysuser;
 import com.xinda.cn.model.xinda.SysuserExample;
 import java.util.List;
@@ -33,5 +35,7 @@ public interface SysuserMapper {
     int updateByPrimaryKeySelective(Sysuser record);
 
     int updateByPrimaryKeyWithBLOBs(Sysuser record);
+//找回密码
+	int findPasswordByCellphone(@Param("record") Sysuser record, @Param("example") SysuserExample example, @Param("cellphone")String cellphone);
     
 }

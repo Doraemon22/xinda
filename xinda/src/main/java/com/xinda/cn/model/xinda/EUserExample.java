@@ -422,52 +422,62 @@ public class EUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andSexEqualTo(Integer value) {
+        public Criteria andSexEqualTo(String value) {
             addCriterion("Sex =", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotEqualTo(Integer value) {
+        public Criteria andSexNotEqualTo(String value) {
             addCriterion("Sex <>", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexGreaterThan(Integer value) {
+        public Criteria andSexGreaterThan(String value) {
             addCriterion("Sex >", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSexGreaterThanOrEqualTo(String value) {
             addCriterion("Sex >=", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexLessThan(Integer value) {
+        public Criteria andSexLessThan(String value) {
             addCriterion("Sex <", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexLessThanOrEqualTo(Integer value) {
+        public Criteria andSexLessThanOrEqualTo(String value) {
             addCriterion("Sex <=", value, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexIn(List<Integer> values) {
+        public Criteria andSexLike(String value) {
+            addCriterion("Sex like", value, "sex");
+            return (Criteria) this;
+        }
+
+        public Criteria andSexNotLike(String value) {
+            addCriterion("Sex not like", value, "sex");
+            return (Criteria) this;
+        }
+
+        public Criteria andSexIn(List<String> values) {
             addCriterion("Sex in", values, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotIn(List<Integer> values) {
+        public Criteria andSexNotIn(List<String> values) {
             addCriterion("Sex not in", values, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexBetween(Integer value1, Integer value2) {
+        public Criteria andSexBetween(String value1, String value2) {
             addCriterion("Sex between", value1, value2, "sex");
             return (Criteria) this;
         }
 
-        public Criteria andSexNotBetween(Integer value1, Integer value2) {
+        public Criteria andSexNotBetween(String value1, String value2) {
             addCriterion("Sex not between", value1, value2, "sex");
             return (Criteria) this;
         }
@@ -539,76 +549,6 @@ public class EUserExample {
 
         public Criteria andCellphoneNotBetween(String value1, String value2) {
             addCriterion("CELLPHONE not between", value1, value2, "cellphone");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgIsNull() {
-            addCriterion("HEAD_IMG is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgIsNotNull() {
-            addCriterion("HEAD_IMG is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgEqualTo(String value) {
-            addCriterion("HEAD_IMG =", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgNotEqualTo(String value) {
-            addCriterion("HEAD_IMG <>", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgGreaterThan(String value) {
-            addCriterion("HEAD_IMG >", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgGreaterThanOrEqualTo(String value) {
-            addCriterion("HEAD_IMG >=", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgLessThan(String value) {
-            addCriterion("HEAD_IMG <", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgLessThanOrEqualTo(String value) {
-            addCriterion("HEAD_IMG <=", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgLike(String value) {
-            addCriterion("HEAD_IMG like", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgNotLike(String value) {
-            addCriterion("HEAD_IMG not like", value, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgIn(List<String> values) {
-            addCriterion("HEAD_IMG in", values, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgNotIn(List<String> values) {
-            addCriterion("HEAD_IMG not in", values, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgBetween(String value1, String value2) {
-            addCriterion("HEAD_IMG between", value1, value2, "headImg");
-            return (Criteria) this;
-        }
-
-        public Criteria andHeadImgNotBetween(String value1, String value2) {
-            addCriterion("HEAD_IMG not between", value1, value2, "headImg");
             return (Criteria) this;
         }
 

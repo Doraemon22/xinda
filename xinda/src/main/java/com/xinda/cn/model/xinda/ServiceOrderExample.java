@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+@Component
 public class ServiceOrderExample {
     protected String orderByClause;
 

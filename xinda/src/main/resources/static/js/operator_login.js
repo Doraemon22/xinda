@@ -26,7 +26,6 @@ $(".login-btn").on("click", function() {
 		type : "post",
 		// 请求路径
 		url : "/login",
-		
 		// 请求参数
 		data : {
 			cellphone : cellphone,
@@ -36,10 +35,10 @@ $(".login-btn").on("click", function() {
 		// 返回数据类型
 		// 请求成功后调用函数
 		success : function(data) {
-			console.log("成功后返回数据", data);
+			console.log("登录成功后返回数据", data);
 			//alert("code=:"+data.code);
 			if (data.code == 1) {
-				location.href = "/findOperByno"
+				location.href = "/findOperByname"
 			} else {
 				alert("信息输入错误!");
 				location.href = "operator_login.html"
@@ -47,7 +46,7 @@ $(".login-btn").on("click", function() {
 		},
 		// 请求失败后调用函数
 		error : function(data) {
-			console.log("失败后返回数据", data);
+			console.log("登录失败后返回数据", data);
 		}
 	})
 })

@@ -1,42 +1,92 @@
+//顶端欢迎  
 $(function(){
-	var user = sessionStorage.getItem("cellphone");
+	var euser = sessionStorage.getItem("cellphone");
 	var txt = "";
 	txt += `${euser}`;
 	$("#euser").append(txt);
 })
-$(function(){
-	var user = sessionStorage.getItem("cusphone");
-	var txt = "";
-	txt += `${user}`;
-	$("#user").append(txt);
-})
 
-function epro(data)
-{
-	var epro = data.epro;
-	var  txt = "";
-	$(".eproduct").append().html("");
-	for(var i = 0;i < epro.length;i++){
-		txt +=`
-		
-		 <div class="article"  > 
-            <img src=""  alt="图片" />
-            <ul class="article-info"  value = "${epro[i].id}">
-					<li>${epro[i].name}</li>
-					<li>${epro[i].info}</li>
-					<li>${epro[i].sname}</li>
-			</ul>
-            <ul class="article-price"  >
-            	<li > ${epro[i].mapket_price}</li>
-                <li>
-                    <a href="redirect?page=e-commerce_pay" >立即购买</a>
-                      <a href="redirect?page=e-commerce_shoping-car" >加入购物车</a>
-                </li>
-            </ul> `
+//头像显示
+$(function(){
+	var id = sessionStorage.getItem("eid");
+$(".imgshow").attr("src","/imgshow?id="+id);
+})
+function defaultImg(img){
+		img.src="/images/user-lg.png";
 	}
-	$(".eproduct").append(txt);
+//******************                 *************************
+
+
+function datetime(time) {
+	var date = new Date(time);
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+			+ date.getDate() + " " + date.getHours() + ":" + date.getMinutes()
+			+ ":" + date.getSeconds();
 }
 
+//立即购买
+function toPay(id){//产品id
+	console.log("产品号：",id);
+	var eid = sessionStorage.getItem("eid");
+	$.ajax({
+		type : "post",
+		url : "/toPay",   
+		data : {
+			id : id,
+			eid:eid
+		},
+		// 返回数据类型
+		// 请求成功后调用函数
+		success : function(data) {
+			console.log("toPay成功后返回数据", data);
+			if (data.code == 1) {
+				location.href = "/payInfo?id=" + data.id;     //动态新增的订单号，控制层：toPay
+			} else {
+				alert("信息输入错误!");
+				location.href = "/findProByname"
+			}
+		},
+		// 请求失败后调用函数
+		error : function(data) {
+			console.log("toPay失败后返回数据", data);
+		}
+	})
+}
+//-------添加产品到购物车
+function addCar(id){  //产品id
+	console.log(id);
+	var eid = sessionStorage.getItem("eid");
+	$.ajax({
+		// 请求类型
+		type : "post",
+		// 请求路径
+		url : "/addCart",
+		// 请求参数
+		data : {
+			id : id,
+			eid:eid,
+		},
+		// 返回数据类型
+		// 请求成功后调用函数
+		success : function(data) {
+			console.log("成功后返回数据", data);
+			if (data.code == 1) {
+				alert("添加购物车成功！");
+				location.href = "/findProByname"
+			} else {
+				alert("添加购物车  失败！");
+				location.href = "/findProByname"
+			}
+		},
+		// 请求失败后调用函数
+		error : function(data) {
+			console.log("失败后返回数据", data);
+		}
+	})
+}
+
+//---------------------------------------------------------------------
+//排序
 $(function(){
 	var a = 0;
 	$("#jiage").click(
@@ -76,89 +126,36 @@ $(function(){
 })
 
 
-$(function(){
-	var pcount=$('#count').val();
-	var psize=$('#pageSize').val();
-	var pstart=$('#pageStart').val();
-	var nowpage=Math.floor(pstart/psize)+1;
-	var cpage=Math.ceil(pcount/psize);
-	var strhtml="";
-	if(cpage<=10){
-		for(var i=1;i<=cpage;i++){
-			if(i==nowpage){
-				strhtml+='<a href=/priceAsc?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa">'+i+'</a>';
-			}else{
-				strhtml+='<span> <a href=/priceAsc?pageStart='+psize*(i-1)+'>'+i+'</a></span>';
-			}
-		}
-	}else if(cpage>10 && 1<=nowpage && nowpage<=6){	
-		for(var i=1;i<=10;i++){
-			if(i==nowpage){
-				strhtml+='<a href=/priceAsc?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa;font-weight:700">'+i+'</a>';
-			}else{
-				strhtml+='<span> <a href=/priceAsc?pageStart='+psize*(i-1)+'>'+i+'</a></span>';
-			}
-		}
-	}else if(cpage>10 && nowpage<=cpage-4){
-		for(var i=nowpage-5;i<=nowpage+4;i++){//6--15
-			if(i==nowpage){
-				strhtml+='<a href=/priceAsc?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa;font-weight:700">'+i+'</a>';
-			}else{
-				strhtml+='<span><a href=/priceAsc?pageStart='+psize*(i-1)+'>'+i+'</a></span>';
-			}
-		}
-	}else if(cpage>10 && cpage-4<nowpage && nowpage<=cpage){
-		for(var i=cpage-9;i<=cpage;i++){
-			if(i==nowpage){
-				strhtml+='<a href=/priceAsc?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa;font-weight:700">'+i+'</a>';
-			}else{
-				strhtml+='<span> <a href=/priceAsc?pageStart='+psize*(i-1)+'>'+i+'</a></span>';
-			}
-		}
-	}else{
-		console.error(00000000);
-	}
-	$("#mydiv").html(strhtml);
-	
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 $(".search-btn").on("click", function(){
-	var name=$('#name').val();//取值      val函数没加（）点击搜索一直出现400错误
+	var name=$('#name').val();//取值    
     location.href="/findProByname?name="+name;
-  /*  console.log($('#name').val());*/
+    
+    var branch = sessionStorage.getItem("branch");
+	var likename = $(".likename").val();
+	console.log(branch,likename);
+	$.ajax({
+		type : "post",
+		url : "/findProByname",
+		data:{
+			branch:branch,
+			likename:likename,
+		},
+		dataType : "json",
+		success : function(data) {
+			console.log("成功",data);
+			if(data.status==1)
+			{
+				alert(data.state);
+			}else{
+				productlist(data);
+			}
+		},
+		error : function(data) {
+			console.log("失败",data);
+		}
 })
-//根据服务商查
-$(".search-btn2").on("click", function(){
-	var name=$('#name').val();//取值      val函数没加（）点击搜索一直出现400错误
-    location.href="/findProByProviderName?name="+name;
-  /*  console.log($('#name').val());*/
 })
 
-$(".search-btn22").on("click", function(){
-	var name=$('#name').val();//取值      val函数没加（）点击搜索一直出现400错误
-    location.href="/findProByProviderName"
-  /*  console.log($('#name').val());*/
-})
-//
-//$(".search-service2").on("click", function(){
-//    $(".search-service").removeClass("font-aqua");
-//    $(".search-product").addClass("font-aqua");
-//})
-//==============
 
 $(".search-product").on("click", function(){
     $(".search-product").addClass("font-aqua");
@@ -169,7 +166,7 @@ $(".search-service").on("click", function(){
     $(".search-product").removeClass("font-aqua");
 })
 
-//   分页展示电商页面所有产品    ePageProlist
+//模糊查询分页路径epage    分页展示电商页面所有产品    ePageProlist
 $(function(){
 	var pcount=$('#count').val();
 	var psize=$('#pageSize').val();
@@ -214,12 +211,8 @@ $(function(){
 		console.error(00000000);
 	}
 	$("#mydiv").html(strhtml);
+	
 });
-
-
-
-
-
 
 
 $(".banner a").on("click", function(event){

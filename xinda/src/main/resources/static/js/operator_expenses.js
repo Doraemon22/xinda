@@ -1,3 +1,4 @@
+
 $(".user-arrow-down").on("click", function () {
     if ($(".dropdown").is(":hidden")) {
         $(".dropdown").show();
@@ -38,4 +39,16 @@ $(".search li").eq(2).on("click", function () {
 $(".search li").eq(3).on("click", function () {
     $(".search li").removeClass("font-red");
     $(this).addClass("font-red");
+})
+$(".qitian-btn").on("click", function(){
+    location.href="/qitian";
+})
+$(".feiyong-btn").on("click", function(){
+    location.href="/feiyong"
+})
+$(".yiyue-btn").on("click", function(){
+    location.href="/yiyue"
+})
+$(".jintian-btn").on("click", function(){
+    location.href="/jintian"
 })

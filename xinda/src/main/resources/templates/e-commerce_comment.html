@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"   xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -16,11 +16,12 @@
 <body>
     <div class="headder-top">
         <div class="width1200 headder-top-content">
-            <div><span>{用户名}</span>欢饮来到信达！<span class="user-quit">[退出]</span></div>
+         <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！<span class="user-quit">[退出]</span></div>
             <ul>
                 <li><a href="redirect?page=e-commerce_shoping-car" ><i class="fa fa-shopping-cart fa-lg"></i>
                         购物车<span>1</span>件</a></li>
-                <li> <a href="redirect?page=e-commerce_order" >
+                <li> 
+                <a th:href="@{/OrderShow}"  >
                         <i class="fa fa-file-text-o fa-lg"></i> 我的订单
                     </a></li>
                 <li>服务商入口</li>
@@ -45,65 +46,42 @@
         <img class="tel" src="./images/xinda-tel.png" alt="">
     </div>
     <ul class="banner width1200">
-        <li><a th:href="@{eprolist}"  class="border-b">全部产品</a></li>
-        <li><a href="#">财税服务</a></li>
-        <li><a href="#">公司工商</a></li>
-        <li><a href="#">人事外包</a></li>
-        <li><a href="#">加盟我们</a></li>
-        <li><a href="#">店铺</a></li>
+        <li><a th:href="@{ePageProlist}"  class="border-b">全部产品</a></li>
+
     </ul>
     <div class="line-aqua"></div>
+         
     <div class="content width1200">
         <div class="content-left">
-            <div class="userinfo">
-                <img src="./images/user-lg.png" alt="">
-                <p>18812345678</p>
+			 <div class="userinfo">
+             <img class = "imgshow"  src = "/images/user-lg.png"  style="width:100px;height:90px;" onerror="defaultImg(this)"/>
             </div>
             <ul class="user-action">
-                <li><a href="redirect?page=e-commerce_order" ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
+                <li><a th:href="@{/OrderShow}" ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
                 </li>
-                <li><a href="#"><i class="fa fa-usd fa-lg"></i> 钱包</a></li>
-                <li><a class="bg-gray" href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i> 用户评价</a></li>
+                <li><a class="bg-gray"  href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i> 用户评价</a></li>
                 <li><a href="redirect?page=e-commerce_set" ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li><!--e-commerce_set.html  -->
             </ul>
         </div>
+        
+
         <div class="content-right">
             <p class="product_num font-aqua">订单详情</p>
             <hr color="#ededed" size="1">
 
             <ul class="content-nav">
-                <li class="nav-active">未评价</li>
+                <li class="nav-active"  onclick = "nocomment()">未评价</li>
                 <li>已评价</li>
             </ul>
-            <hr color="#ededed" size="1">
-            <div class="article">
-                <img src="" alt="图片" />
-                <ul class="article-info">
-                    <li>代理记账（一年）</li>
-                    <li>适用于没有经营性业务的企业，代理记账服务</li>
-                    <li>云智汇咨询服务有限公司</li>
-                </ul>
-                <p>购买时间：2017-02-23 23:23:34</p>
-                <p class="evaluate_btn">去评价</p>
-            </div>
-            <div class="article">
-                    <img src="" alt="图片" />
-                    <ul class="article-info">
-                        <li>代理记账（一年）</li>
-                        <li>适用于没有经营性业务的企业，代理记账服务</li>
-                        <li>云智汇咨询服务有限公司</li>
-                    </ul>
-                    <p>购买时间：2017-02-23 23:23:34</p>
-                    <p class="evaluate_btn">去评价</p>
-                </div>
-                <hr color="#ccc" size="1">
+                      <div class="list"></div><!-- 显示订单列表 -->
+         
         </div>
     </div>
-
+     
     <div class="masking">
         <div class="scroller">
             <h3>评价内容</h3>
-            <textarea name="" id="" cols="55" rows="7"></textarea><br>
+            <textarea name="" id="content" cols="55" rows="7"></textarea><br>
             <button class="save">评价</button>
             <button class="cancel">取消</button>
         </div>

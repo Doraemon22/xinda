@@ -15,11 +15,11 @@ $(".login-btn").on("click", function() {
 	var cellphone = $(".e_cellphone").val();
 	var password = $(".e_password").val();
 	var imgcode = $(".code").val();
-	//console.log(cellphone,password,imgcode)；
+//	console.log(cellphone,password,imgcode)；
 	$.ajax({
 		type : "post",
 		// 请求路径
-		url : "/login",
+		url : "/elogin",
 		// 请求参数
 		data : {
 			cellphone : cellphone,
@@ -31,11 +31,15 @@ $(".login-btn").on("click", function() {
 		dataType:"json",
 		success : function(data) {
 			console.log("成功后返回数据", data);
-			if (data.code == 1) {
-		/*		console.log(data.id, data.cellphone);
-				sessionStorage.setItem("ephone", data.cellphone);
-				sessionStorage.setItem("eid", data.id);*/
-				location.href = "/ePageProlist"
+		//	alert(data.msg);
+			if (data.code == 1) {   
+				console.log(data.cellphone,data.id,data.name);//对应控制层 map里的id。。。
+				sessionStorage.setItem("cellphone", data.cellphone);
+				sessionStorage.setItem("eid", data.id);
+				sessionStorage.setItem("ename", data.name);
+				sessionStorage.setItem("esex", data.sex);
+				sessionStorage.setItem("eemail", data.email);
+				location.href = "/ePageProlist";
 					
 			} else {
 				alert("信息输入错误!");

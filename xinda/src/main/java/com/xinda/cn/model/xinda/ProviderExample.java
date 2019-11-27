@@ -11,6 +11,25 @@ public class ProviderExample {
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
+    protected int pageSize;
+    protected int pageStart;
+
+    public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public int getPageStart() {
+		return pageStart;
+	}
+
+	public void setPageStart(int pageStart) {
+		this.pageStart = pageStart;
+	}
+
 
     public ProviderExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -1365,4 +1384,6 @@ public class ProviderExample {
             this(condition, value, secondValue, null);
         }
     }
+
+
 }

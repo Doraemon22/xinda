@@ -4,6 +4,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.xinda.cn.dao.mapper.ServiceOrderMapper;
+import com.xinda.cn.model.xinda.ServiceOrder;
 import com.xinda.cn.model.xinda.ServiceOrderExample;
 import com.xinda.cn.service.SOrderService;
 import com.xinda.cn.vo.SOrder;
@@ -42,6 +43,12 @@ public class SOrderServiceImpl implements SOrderService {
 		example.setService_name(serviceName);
 		return serviceOrderMapper.selectByName(example,serviceName);
 	}
+	@Override
+	public ServiceOrder selectByPrimaryKey(String id) {
+		// TODO Auto-generated method stub
+		return serviceOrderMapper.selectByPrimaryKey(id);
+	}
+	
 	
 	
 

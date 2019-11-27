@@ -16,11 +16,12 @@
 <body>
     <div class="headder-top">
         <div class="width1200 headder-top-content">
-            <div><span>{用户名}</span>欢饮来到信达！<span class="user-quit">[退出]</span></div>
+          <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！
+          <span class="user-quit"><a href="redirect?page=index" >[退出]</a></span></div>
             <ul>
-                <li><a href="redirect?page=e-commerce_shoping-car" ><i class="fa fa-shopping-cart fa-lg"></i>
+                <li><a th:href="@{/showCart}" ><i class="fa fa-shopping-cart fa-lg"></i>
                         购物车<span>1</span>件</a></li>
-                <li> <a href="redirect?page=e-commerce_order" >
+                <li> <a th:href="@{/OrderShow}" >
                 			<i  class="fa fa-file-text-o fa-lg"></i> 我的订单
                     </a></li>
                 <li>服务商入口</li>
@@ -46,26 +47,19 @@
     </div>
     <ul class="banner width1200">
         <li><a th:href="@{ePageProlist}"  class="border-b">全部产品</a></li>
-        <li><a href="#">财税服务</a></li>
-        <li><a href="#">公司工商</a></li>
-        <li><a href="#">人事外包</a></li>
-        <li><a href="#">加盟我们</a></li>
-        <li><a href="#">店铺</a></li>
     </ul>
     <div class="line-aqua"></div>
     <div class="content width1200">
         <div class="content-left">
             <div class="userinfo">
-                <img src="./images/user-lg.png" alt="">
-                <p>18812345678</p>
+             <img class = "imgshow"  src = "/images/user-lg.png"  style="width:100px;height:90px;" onerror="defaultImg(this)"/>
             </div>
             <ul class="user-action">
-                <li><a href="redirect?page=e-commerce_order" ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
+                <li><a th:href="@{/OrderShow}"  ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
                 </li>
-                <li><a href="#"><i class="fa fa-usd fa-lg"></i> 钱包</a></li>
-                <li><a href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i>
+                <li><a  href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i>
                         用户评价</a></li>
-                <li><a class="bg-gray"  href="redirect?page=e-commerce_set" ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li>
+                <li><a class="bg-gray"  href="redirect?page=e-commerce_set"  ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li>
             </ul>
         </div>
         <div class="content-right">
@@ -77,44 +71,59 @@
             <ul class="change-password">
                 <li>
                     <span>旧密码：</span>
-                    <input type="text" />
+                    <input type="password"  class="password_old"/>
                 </li>
                 <li>
                     <span>新密码：</span>
-                    <input type="text" />
+                    <input class="new"  type="password" />
                 </li>
                 <li>
                     <span>再次输入新密码：</span>
-                    <input type="text" />
+                    <input class="password_new2" type="password" />
+                </li>
+                 <li>
+                  <input  name=" id"  type="hidden"  class=" id hideEid"  value = ""/>
                 </li>
                 <li>
-                    <p class="save">保存</p>
+                    <p class="save  password">保存</p>
                 </li>
             </ul>
-            <ul class="account-info">
+            <ul class="account-info" >
                 <li>
                     <span>当前头像：</span>
-                    <img src="./images/user-lg.png" alt="">
+                    <img class = "imgshow" src = "/images/user-lg.png"  style="width:100px;height:100px;" onerror="defaultImg(this)"/>
+                       </li>
+                       <li>
+                       
+                    <form action="/saveUserImg" method="post"  enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="input2"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>
+                 
                 </li>
                 <li>
                     <span>性别：</span>
-                    <input class="radio" type="radio" name="sex" /> 男 
-                    <input class="radio" type="radio" name="sex" /> 女
+                    <input class="radio" type="radio" name="sex"  value = "男"/> 男 
+                    <input class="radio" type="radio" name="sex" value = "女"/> 女
                 </li>
+             
                 <li>
-                    <span>姓名：</span>
-                    <input type="text"  name="name"/>
+                    <span >姓名：</span>
+                    <input type="text"  name="name"  class="name ejsname" value=""/>
                 </li>
                 <li>
                     <span>邮箱：</span>
-                    <input type="text"  name="email"/>
+                    <input type="text"  name="email" class="email ejsemail"/>
                 </li>
                 <li>
-                   <!--  <p class="save">保存</p> -->
-                   <form action="eset">
-                    <input type="submit"  value="保存"   class="save"/><br />
-                    </form>
+                  <input  name=" id"    type="hidden" class=" id hideEid"  value = ""/>
                 </li>
+             <li>
+                    <p class="save information">保存</p>
+             </li>
             </ul>
         </div>
 

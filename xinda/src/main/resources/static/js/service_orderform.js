@@ -1,3 +1,14 @@
+$(function(){
+	var provider=sessionStorage.getItem("cellphone");
+	var id=sessionStorage.getItem("pid");
+	
+	var txt = "";
+	txt += `<span >${provider}</span>`;
+	$("#provider").append(txt);//顶端
+
+})
+
+
 /*新增*/
 $(function() {
 		var pcount = $('#count').val();
@@ -32,7 +43,7 @@ $(function() {
 							+ serviceName
 							+ ' style="background-color:#aaaaaa;font-weight:700">'
 							+ i + '</a>';
-					//strhtml+='<a href=/findSOrdByName?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa"><div class="nowpage">'+i+'</div></a>';
+					//strhtml+='<a href=/fenyelike?pageStart='+psize*(i-1)+' style="background-color:#aaaaaa"><div class="nowpage">'+i+'</div></a>';
 				} else {
 					strhtml += '<span> <a href=/findSOrdByName?pageStart=' + psize
 							* (i - 1) + '&serviceName=' + serviceName + '>' + i

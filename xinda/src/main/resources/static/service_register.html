@@ -29,19 +29,22 @@
 		<h2 class="title">信达服务商端</h2>
 		<ul class="main">
 			<ul class="input">
-				<li><input type="text" class="id" placeholder="请输入id">
-				</li>
+				<!-- <li><input type="text" class="id" placeholder="请输入id">
+				</li> -->
 				<li><input type="text" class="cellphone" placeholder="请输入手机号">
 				</li>
 				<li><input type="text" class="code" placeholder="请输入验证码">
 					<img class="code1" src="./images/code.png" /></li>
-				<li><select id="cmbProvince">
-				</select> <select id="cmbCity">
-				</select> <select id="cmbArea">
-				</select> <script type="text/javascript">
-					addressInit('cmbProvince', 'cmbCity', 'cmbArea', '省', '市',
+					
+				<li>
+			   	<select id="cmbProvince"  name="cmbProvince"></select>
+				 <select id="cmbCity"  name="cmbCity" ></select>
+				  <select id="cmbArea"  name="cmbArea"></select>
+				   <script type="text/javascript">
+				   addressInit('cmbProvince', 'cmbCity', 'cmbArea', '省', '市',
 							'县');
-				</script></li>
+				</script>
+				</li>
 				<li><input type="text" class="password" placeholder="请设置密码"></li>
 				<li>
 					<p class="login-btn font-aqua">立即注册</p>

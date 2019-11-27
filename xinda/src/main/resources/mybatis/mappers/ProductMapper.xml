@@ -3,8 +3,11 @@
 <mapper namespace="com.xinda.cn.dao.mapper.ProductMapper">
   <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.Product">
     <id column="ID" jdbcType="VARCHAR" property="id" />
+      <id column="eid" jdbcType="VARCHAR" property="eid" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="CODE" jdbcType="INTEGER" property="code" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="money" jdbcType="INTEGER" property="money" />
     <result column="INFO" jdbcType="VARCHAR" property="info" />
     <result column="SHOW_ORDER" jdbcType="INTEGER" property="showOrder" />
     <result column="STYLE_ID" jdbcType="VARCHAR" property="styleId" />
@@ -13,7 +16,7 @@
     <result column="UNIT" jdbcType="VARCHAR" property="unit" />
     <result column="STORE_NUM" jdbcType="INTEGER" property="storeNum" />
     <result column="SALE_NUM" jdbcType="INTEGER" property="saleNum" />
-    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" /> 
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xinda.cn.model.xinda.Product">
     <result column="IMG" jdbcType="LONGVARBINARY" property="img" />
@@ -84,13 +87,59 @@
     IMG
   </sql>
   <!--  ==================开始============================-->
+  <!--=================迟 连表 分页模糊==================  -->
+  <!--查询用户  -->
+   <select id="selectOuserByName"  parameterType="map"   resultType="com.xinda.cn.vo.OUser">
+         SELECT e.NAME,e.CELLPHONE,e.REGISTER_TIME,e.REGION_ID,sum(b.BUY_NUM) num,sum(b.TOTAL_PRICE) money,e.id
+    FROM e_user e left join business_order b
+     on e.ID=b.E_ID
+    	
+    <if test="name !=null and name !=''">
+    			WHERE  name like concat('%',#{name},'%')
+    </if>
+    	GROUP BY e.id
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  
+  <select id="selectOSproByName" parameterType="map" resultMap="BaseResultMap">
+  select *  from product,provider
+    	where product.code=provider.id
+    	and name like concat('%',#{name},'%')
+    <if test="pexample.pageStart>=0">
+    	limit #{pexample.pageStart} ,#{pexample.pageSize}
+    </if>
+    <if test="pexample.orderByClause != null">
+      order by #{pexample.orderByClause}
+    </if>
+  </select>
+  <!--=================迟 连表 分页模糊end==================  -->
   <!--  ==================肖 开始============================-->
-    <select id="selectSproByName" parameterType="map" resultMap="BaseResultMap">
+    <!-- <select id="selectSproByName" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from product
     <if test="name !=null and name !=''">
         where name like concat('%',#{name},'%') 
+    </if>
+    <if test="pexample.pageStart>=0">
+    	limit #{pexample.pageStart} ,#{pexample.pageSize}
+    </if>
+    <if test="pexample.orderByClause != null">
+      order by #{pexample.orderByClause}
+    </if>
+  </select> -->
+  
+  <select id="selectSproByName" parameterType="map" resultMap="BaseResultMap">
+  select *  from product,provider
+    	where product.code=provider.id
+    	and provider.id=#{id}
+    	<if test="name !=null and name !=''">
+        and name like concat('%',#{name},'%') 
     </if>
     <if test="pexample.pageStart>=0">
     	limit #{pexample.pageStart} ,#{pexample.pageSize}
@@ -106,8 +155,41 @@
     where name like concat('%',#{name},'%')
     </if>
   </select>
-  
+    <!-- 按id删除服务产品 -->
+  <delete id="deleteByProKey" parameterType="java.lang.String">
+    delete from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <!-- 查询出要修改的服务商产品 -->
+  <select id="selectSproById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <!-- 修改服务商产品信息 -->
+  <update id="updateSproById" parameterType="com.xinda.cn.model.xinda.Product">
+    update product
+    set NAME = #{name,jdbcType=VARCHAR},
+      INFO = #{info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{mapketPrice,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      STORE_NUM = #{storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 上传图片 -->
+   <update id="saveUserImg" parameterType="com.xinda.cn.model.xinda.Product">
+    update product set IMG = #{img} where id = #{id}
+  </update>
   <!--  ==================肖  结束============================-->
+
   <!--=================分页显示电子商务页面产品    查询map,用#取值，另外需要   对象.属性     $可以直接取example类 的属性值==================  -->
     <select id="showPageEpro"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
       select   p1.id,name,sname,info,img,mapket_price
@@ -119,6 +201,13 @@
      <if test="productExample.pageStart>=0">
 	limit #{productExample.pageStart},#{productExample.pageSize}	
     </if>
+  </select>
+  <!--为了产品图片  -->
+   <select id="selectByPrimaryKey2"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code  and p1.id=#{id}
+            
   </select>
   <!--  降序-->
      <select id="showPriceDescPro"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
@@ -238,11 +327,6 @@
     where ID = #{id,jdbcType=VARCHAR}
   </select>
   
-  <!-- 按id删除服务产品 -->
-  <delete id="deleteByProKey" parameterType="java.lang.String">
-    delete from product
-    where ID = #{id,jdbcType=VARCHAR}
-  </delete>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from product

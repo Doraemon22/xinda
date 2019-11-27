@@ -19,15 +19,29 @@ public interface EUserMapper {
 
     int insertSelective(EUser record);
 
+    List<EUser> selectByExampleWithBLOBs(EUserExample example);
+
     List<EUser> selectByExample(EUserExample example);
 
     EUser selectByPrimaryKey(String id);
 
-    int updateByExampleSelective(@Param("record") EUser record, @Param("example") EUserExample example);
+    int updateByExampleSelective(@Param("record") EUser record, @Param("example") EUserExample example, @Param("id")String id);//更改了函数
+
+    int updateByExampleWithBLOBs(@Param("record") EUser record, @Param("example") EUserExample example);
 
     int updateByExample(@Param("record") EUser record, @Param("example") EUserExample example);
 
     int updateByPrimaryKeySelective(EUser record);
 
+    int updateByPrimaryKeyWithBLOBs(EUser record);
+
     int updateByPrimaryKey(EUser record);
+    
+//更新头像  
+	int saveUserImg(EUser record);//, @Param("id")String id
+//找回密码
+	int findPasswordByCellphone(@Param("record") EUser record, @Param("example") EUserExample example, @Param("cellphone")String cellphone);
+//运营
+	long countByeUser(String name);
+
 }

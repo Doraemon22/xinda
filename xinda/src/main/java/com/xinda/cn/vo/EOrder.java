@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EOrder {
 	private String business_no;
+	private String id;
+	private String product_id;//产品id
 	private String sname;
 	private String name;
 	private String unit_price;
@@ -14,13 +16,42 @@ public class EOrder {
 	private Integer total_price;
 	private Integer pay_type;
 	private Integer status;
+	private Date create_time;
+	private String info;
+    private Integer mapket_price;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getProduct_id() {
+		return product_id;
+	}
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+	public Integer getMapket_price() {
+		return mapket_price;
+	}
+	public void setMapket_price(Integer mapket_price) {
+		this.mapket_price = mapket_price;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	
 	public Integer getStatus() {
 		return status;
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	private Date create_time;
+	
 	public String getBusiness_no() {
 		return business_no;
 	}

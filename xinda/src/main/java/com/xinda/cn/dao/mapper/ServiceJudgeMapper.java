@@ -1,10 +1,13 @@
 package com.xinda.cn.dao.mapper;
 
-import com.xinda.cn.model.xinda.ServiceJudge;
-import com.xinda.cn.model.xinda.ServiceJudgeExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.xinda.cn.model.xinda.ServiceJudge;
+import com.xinda.cn.model.xinda.ServiceJudgeExample;
+@Mapper
 public interface ServiceJudgeMapper {
     long countByExample(ServiceJudgeExample example);
 
@@ -27,4 +30,5 @@ public interface ServiceJudgeMapper {
     int updateByPrimaryKeySelective(ServiceJudge record);
 
     int updateByPrimaryKey(ServiceJudge record);
+//评论
 }

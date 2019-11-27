@@ -1,7 +1,30 @@
-$(".delete-btn").on("click", function(){
-	var id=$('#id').val();
-    location.href="/deleteSproById?id="+id;
+$(function(){
+	var provider=sessionStorage.getItem("cellphone");
+	var id=sessionStorage.getItem("pid");
+	
+	var txt = "";
+	txt += `<span >${provider}</span>`;
+	$("#provider").append(txt);//顶端
+
 })
+
+//显示头像
+$(function() {
+	var id = sessionStorage.getItem("pid");
+	$(".imgshow").attr("src", "/headImg2?id="+id);
+})
+function defaultImg(img) {
+	img.src = "/images/default_user.png";
+}
+
+
+//$(function(){
+//	var provider=sessionStorage.getItem("cellphone");
+//	
+//	var txt = "";
+//	txt += `<span >${provider}</span>`;
+//	$("#provider").append(txt);//顶端
+//})
 
 $(".search-btn").on("click", function(){
 	var name=$('#name').val();

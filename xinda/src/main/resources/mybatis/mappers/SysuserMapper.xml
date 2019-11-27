@@ -78,6 +78,46 @@
   <sql id="Blob_Column_List">
     HEAD_IMG
   </sql>
+  <!-- ======================================================= -->
+  <!-- 找回密码 -->
+  <update id="findPasswordByCellphone" parameterType="map">
+    update sysuser
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginId != null">
+        LOGIN_ID = #{record.loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null">
+        CELLPHONE = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.registerTime != null">
+        REGISTER_TIME = #{record.registerTime,jdbcType=DATE},
+      </if>
+      <if test="record.headImg != null">
+        HEAD_IMG = #{record.headImg,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+      where CELLPHONE = #{cellphone}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+   <!-- ===========================完！============================ -->
   <select id="selectByExampleWithBLOBs" parameterType="com.xinda.cn.model.xinda.SysuserExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">

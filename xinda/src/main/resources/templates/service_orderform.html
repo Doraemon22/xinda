@@ -23,34 +23,31 @@
 		<ul class="user_info">
 			<li><a th:href="@{/findSproByName}"><i
 					class="fa fa-cog fa-fw"></i>服务管理</a></li>
-			<li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
-			<li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>
-			<li><img src="./images/default_user.png"> <span>用户名字</span>
+			<li><img src="./images/default_user.png"> <span id="provider">用户:</span>
 				<i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
 				<ul class="dropdown">
-					<li>更改信息</li>
-					<li>退出登录</li>
+					<a href="service_login.html">退出</a>
 				</ul></li>
 		</ul>
 	</div>
 	<div class="main">
 		<ul class="main-nav">
-			<li><a href="#"> <i class="fa fa-home fa-fw"></i>
+			<li><a th:href="@{/findSproByName}"> <i class="fa fa-home fa-fw"></i>
 					<p>主页</p>
 			</a></li>
 			<li class="bg-red"><a th:href="@{/findSOrdByName}"> <i
 					class="fa fa-shopping-cart fa-fw"></i>
 					<p>订单</p>
 			</a></li>
-			<li><a href="redirect?page=service_expenses.html"> <i
+			<!-- <li><a href="redirect?page=service_expenses.html"> <i
 					class="fa fa-cny fa-fw"></i>
 					<p>费用</p>
-			</a></li>
+			</a></li> -->
 			<li><a href="redirect?page=service_store.html"> <i
 					class="fa fa-institution fa-fw"></i>
 					<p>店铺</p>
 			</a></li>
-			<li><a href="redirect?page=service_setting.html"> <i
+			<li><a href="/providerInfo"> <i
 					class="fa fa-cog fa-fw"></i>
 					<p>设置</p>
 			</a></li>
@@ -64,7 +61,6 @@
 			</div>
 			<ul class="main-tab">
 				<li class="border-red order1">服务中</li>
-				<li class="order2">已完成</li>
 			</ul>
 			<div class="main-content">
 				<div class="search">
@@ -102,8 +98,10 @@
 						<td><span th:text="${user.buy_num}"></span></td>
 						<td><span th:text="${user.total_price}"></span></td>
 						<td><span th:text="${user.create_time}"></span></td>
-						<td><span class="handle-btn"><i
-								class="fa fa-edit fa-fw"></i>详情</span></td>
+						
+						<td><a th:href="@{'/showSordInfo?id='+${user.service_no}}"><span class="handle-btn"><i
+								class="fa fa-edit fa-fw"></i>详情</span></a></td>
+								
 					</tr>
 				</tbody>
 			</table>

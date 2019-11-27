@@ -273,7 +273,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map"><!-- parameterType="map" -->
     update provider
     <set>
       <if test="record.id != null">
@@ -289,7 +289,7 @@
         sname = #{record.sname,jdbcType=VARCHAR},
       </if>
       <if test="record.providerInfo != null">
-        PROVIDER_INFO = #{record.providerInfo,jdbcType=VARCHAR},
+        PROVIDER_INFO = '${record.providerInfo,jdbcType=VARCHAR}',
       </if>
       <if test="record.cellphone != null">
         CELLPHONE = #{record.cellphone,jdbcType=VARCHAR},
@@ -359,7 +359,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+ <!--  <update id="updateByExample" parameterType="map">
     update provider
     set ID = #{record.id,jdbcType=VARCHAR},
       TYPE = #{record.type,jdbcType=INTEGER},
@@ -381,7 +381,21 @@
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update> -->
+  
+  <!--   开始 -->
+   <update id="updateByExample" parameterType="map">
+    update provider
+    set
+      PASSWORD = #{record.password,jdbcType=VARCHAR}
+    where
+      CELLPHONE = #{record.cellphone,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
   </update>
+  <!--   结束 -->
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.xinda.cn.model.xinda.Provider">
     update provider
     <set>
@@ -439,6 +453,8 @@
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xinda.cn.model.xinda.Provider">
     update provider
     set TYPE = #{type,jdbcType=INTEGER},
@@ -480,4 +496,36 @@
       RECOMMEND = #{recommend,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <!-- 上传图片 -->
+   <update id="saveUserImg" parameterType="com.xinda.cn.model.xinda.Provider">
+    update provider set PROVIDER_IMG = #{providerImg} where id = #{id}
+  </update>
+  
+  <!-- 修改 -->
+  <update id="updateByProvId" parameterType="com.xinda.cn.model.xinda.Provider">
+    update provider
+    set sname = #{sname,jdbcType=VARCHAR},
+    cellphone = #{cellphone,jdbcType=VARCHAR},
+    weixin = #{weixin,jdbcType=VARCHAR},
+    qq = #{qq,jdbcType=VARCHAR},
+    emall = #{emall,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getIdByCellPhone" parameterType="String" resultType="String">
+    select id from provider where cellphone = #{value};
+  </select>
+  <!--  运营商 查询服务商-->
+	<select id="oselectByServicename"  parameterType="map"  resultMap="BaseResultMap">
+		 SELECT  *  from provider
+        <if test="serviceName !=null and serviceName !=''">
+    		where  sname like concat('%',#{serviceName},'%')
+    </if>
+    <if test="providerExample.orderByClause != null">
+      order by #{providerExample.orderByClause}
+    </if>
+     <if test="providerExample.pageStart>=0">
+	limit #{providerExample.pageStart},#{providerExample.pageSize}	
+    </if>
+  </select>
 </mapper>

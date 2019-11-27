@@ -1,6 +1,8 @@
 package com.xinda.cn.service;
 
 import java.util.List;
+
+import com.xinda.cn.model.xinda.ServiceOrder;
 import com.xinda.cn.vo.SOrder;
 
 public interface SOrderService {
@@ -12,4 +14,6 @@ public interface SOrderService {
 	int getCount(String serviceName);
 	//订单页分页+按照业务订单号模糊查询
 	List<SOrder> selectByName(int pageStart,int pageSize,String serviceName);
+	//详情
+	ServiceOrder selectByPrimaryKey(String id);
 }

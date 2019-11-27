@@ -109,14 +109,14 @@ table td:nth-child(5) {
 
 .down-line-mark,
 .up-line-mark {
-    width: 42px;
+    width: 60px;
     line-height: 26px;
     text-align: center;
     font-size: 12px;
     border-radius: 2px;
     display: inline-block;
     color: #fff;
-    background-color: #d20a4b
+    background-color: #d20a4b;
 }
 
 .down-line-mark-orange {
@@ -211,11 +211,12 @@ table td:nth-child(5) {
     vertical-align: middle;
     margin: 0 3px;
 }
-.main-pagination .main-pagination-page{
+.main-pagination .main-pagination-page{    
     line-height: 26px;
     padding: 0px 16px;
     display: inline-block;
     box-sizing: border-box;
     color: #fff;    
-    border: 1px solid #ddd;   
+    border: 1px solid #ddd; 
+    
 }

@@ -37,12 +37,8 @@
 			</javaClientGenerator>
 			
 		<!-- 配置表信息 -->   
-		
-		<table  tableName="sysuser">
-			<columnOverride column="???" property="???" />
+<table  tableName="cart">
 		</table>
-		
-
 
 	<!-- 	<table  tableName="provider_img">
 		</table> -->
@@ -53,7 +49,7 @@
 		</table> -->
 		<!-- <table  tableName="service_judge">
 		</table> -->
-		<table tableName="service_order">
+<!-- 		<table tableName="service_order">
 		</table>
 				<table  tableName="business_order">
 		</table>
@@ -64,7 +60,10 @@
 		<table  tableName="e_user">
 		</table>
 		<table   tableName="product">
+			<table  tableName="sysuser">
+			<columnOverride column="???" property="???" />
 		</table>
+		</table> -->
 
 	</context>
 </generatorConfiguration>

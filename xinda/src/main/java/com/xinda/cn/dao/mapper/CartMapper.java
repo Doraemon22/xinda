@@ -7,13 +7,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xinda.cn.model.xinda.Cart;
 import com.xinda.cn.model.xinda.CartExample;
+import com.xinda.cn.vo.ECart;
 @Mapper
 public interface CartMapper {
     long countByExample(CartExample example);
 
     int deleteByExample(CartExample example);
-
-    int deleteByPrimaryKey(String id);
 
     int insert(Cart record);
 
@@ -21,13 +20,16 @@ public interface CartMapper {
 
     List<Cart> selectByExample(CartExample example);
 
-    Cart selectByPrimaryKey(String id);
-
     int updateByExampleSelective(@Param("record") Cart record, @Param("example") CartExample example);
 
     int updateByExample(@Param("record") Cart record, @Param("example") CartExample example);
+    
+    //
+    List<ECart> showCartProList(@Param("example")CartExample cartExample);
 
-    int updateByPrimaryKeySelective(Cart record);
-
-    int updateByPrimaryKey(Cart record);
+	int updateCarInfoById(String cartid, String pnum, String money);
+	
+	 int deleteByPrimaryKey(String id);
+	 
+	 Cart selectByPrimaryKey(@Param("id")String id);
 }

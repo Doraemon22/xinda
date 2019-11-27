@@ -9,6 +9,8 @@ public class BusinessOrder extends BusinessOrderKey {
 
     private String orderInfo;
 
+    private Integer commentStatus;
+
     private Integer unitPrice;
 
     private Integer buyNum;
@@ -20,8 +22,28 @@ public class BusinessOrder extends BusinessOrderKey {
     private String eId;
 
     private Date createTime;
+    
+    private String ename;
+    private String status;
+    
 
-    public String getBusinessNo() {
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getEname() {
+		return ename;
+	}
+
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+
+	public String getBusinessNo() {
         return businessNo;
     }
 
@@ -43,6 +65,14 @@ public class BusinessOrder extends BusinessOrderKey {
 
     public void setOrderInfo(String orderInfo) {
         this.orderInfo = orderInfo == null ? null : orderInfo.trim();
+    }
+
+    public Integer getCommentStatus() {
+        return commentStatus;
+    }
+
+    public void setCommentStatus(Integer commentStatus) {
+        this.commentStatus = commentStatus;
     }
 
     public Integer getUnitPrice() {

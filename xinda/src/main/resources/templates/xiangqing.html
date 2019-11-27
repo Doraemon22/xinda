@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="../js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+<h3>订单详情</h3>
+                   
+      			<li>
+                    <span>业务订单号:</span>
+                    <input type="text" name="businessNo" style="width:300px;height:25px" th:value="${border.businessNo}"/>
+                </li>
+				<li>
+                    <span>客户:</span>
+                    <input type="text" name="ename" style="width:300px;height:25px"  th:value="${border.ename}"/>
+                </li>
+                <li>
+                    <span>订单内容:</span>
+                    <input type="text"   style="width:300px;height:80px"  name="orderInfo" th:value="${border.orderInfo}"/>
+                </li>
+                <li>
+                    <span>订单金额:</span>
+                    <input type="text" name="unitPrice" style="width:300px;height:25px"  th:value="${border.unitPrice}"/>
+                </li>
+                <li>
+                    <span>创建时间:</span>
+                    <input type="text"  style="width:300px;height:25px"   name="createTime" th:value="${border.createTime}"/>
+                </li>
+               
+           <script src="../js/service_product.js"></script>
+</body>
+
+</html>

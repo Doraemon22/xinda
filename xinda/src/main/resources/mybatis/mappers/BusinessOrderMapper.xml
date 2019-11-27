@@ -3,10 +3,12 @@
 <mapper namespace="com.xinda.cn.dao.mapper.BusinessOrderMapper">
   <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.BusinessOrder">
     <id column="ID" jdbcType="VARCHAR" property="id" />
-    <id column="STATUS" jdbcType="INTEGER" property="status" />
+    <id column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="BUSINESS_NO" jdbcType="VARCHAR" property="businessNo" />
     <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
     <result column="ORDER_INFO" jdbcType="VARCHAR" property="orderInfo" />
+     <result column="ENAME" jdbcType="VARCHAR" property="ename" />
+    <result column="comment_status" jdbcType="INTEGER" property="commentStatus" />
     <result column="UNIT_PRICE" jdbcType="INTEGER" property="unitPrice" />
     <result column="BUY_NUM" jdbcType="INTEGER" property="buyNum" />
     <result column="TOTAL_PRICE" jdbcType="INTEGER" property="totalPrice" />
@@ -43,40 +45,6 @@
       </foreach>
     </where>
   </sql>
-  <!--  电子商务订单显示-->
-      <select id="showEOrder"  parameterType="map"   resultType="com.xinda.cn.vo.EOrder">
-           select  business_no,sname,NAME,unit_price,buy_num,total_price,pay_type,create_time,b.status
-	from business_order b,product p,provider p2
-	 where b.product_id=p.id AND p.code=p2.id
-    <if test="example.orderByClause != null">
-      order by #{example.orderByClause}
-    </if>
-     <if test="example.pageStart>=0">
-	limit #{example.pageStart},#{example.pageSize}	
-    </if>
-  </select>
-  <!--======================开始============================  -->
-  <select id="selectOperByno"  parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"   resultMap="BaseResultMap">
-      select BUSINESS_NO,PRODUCT_ID,ORDER_INFO,UNIT_PRICE,CREATE_TIME
-    from business_order
-    <if test="no!=null and no !=''">
-    		where  BUSINESS_NO like concat('%',${no},'%')
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-     <if test="pageStart>=0">
-	limit ${pageStart},${pageSize}	
-    </if>
-  </select> 
-     <select id="searchCount"  parameterType="map"  resultType="java.lang.Long">
-    select count(*) from business_order
-    <if test="no!=null and no !=''">
-    		where BUSINESS_NO like concat('%',${no},'%')
-    </if>
-  </select>
-  
-  <!--======================结束============================  -->
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -107,9 +75,135 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ID, STATUS, BUSINESS_NO, PRODUCT_ID, ORDER_INFO, UNIT_PRICE, BUY_NUM, TOTAL_PRICE, 
-    PAY_TYPE, E_ID, CREATE_TIME
+    ID, STATUS, BUSINESS_NO, PRODUCT_ID, ORDER_INFO, comment_status, UNIT_PRICE, BUY_NUM, 
+    TOTAL_PRICE, PAY_TYPE, E_ID, CREATE_TIME
   </sql>
+  
+   <!--  电子商务我的订单显示-->
+      <select id="showEOrder"  parameterType="map"   resultType="com.xinda.cn.vo.EOrder">
+	 select * 
+	  from business_order b,product p,provider p1
+    	where b.product_id=p.id AND CODE=p1.id
+    	and e_id=#{e_id}
+    <if test="example.orderByClause != null">
+      order by #{example.orderByClause}
+    </if>
+
+  </select>
+<!--         <select id="findEOrder"  parameterType="java.lang.String"   resultType="com.xinda.cn.vo.EOrder">
+	 select  * 
+	  from business_order b,product p,provider p1
+    	<where>
+    		b.product_id=p.id AND CODE=p1.id
+    		and b.e_id=#{e_id}
+    		<if test="eorderid!=null  and eorderid !=''">	
+    			and b.id=#{eorderid}
+    		</if>
+    	</where>
+  </select> -->
+  <select id="findEOrder" parameterType="java.lang.String"  resultType="com.xinda.cn.vo.EOrder">
+  		 select  business_no,product_id,name
+	  from business_order b,product <!-- ,provider p1 -->
+    <where>
+    	b.product_id=product.ID <!-- AND CODE=p1.id -->
+    		and b.e_id=#{e_id}
+    		<if test="business_no  !=null  and business_no !=''">	
+    			and b.business_no=#{business_no}
+    		</if>
+  <!--   	<if test="start != null and start !='' ">
+    		and b.create_time<![CDATA[>=]]>#{start}
+    	</if>
+    	<if test="end != null and end !='' ">
+    		and b.create_time 	<![CDATA[<=]]> #{end}     <![CDATA[<=]]>    &lt;=
+    	</if> -->
+    </where>
+  </select>
+  <!-- 查询订单返回的个数 -->
+   <select id="searchOrderCount" parameterType="map" resultType="java.lang.Long">
+    select count(*) from business_order
+    <if  test="id !=null and id!=''">
+    where id like concat('%',#{eorderid},'%')
+    </if>
+    and eId=#{e_id}
+  </select>
+   <!--  1.CommentOrderCount-->
+    <select id="count" parameterType="map" resultType="java.lang.Long">
+    select count(*) from business_order
+  where e_id=#{id}
+  </select>
+  <!--  2. CommentOrderShow -->
+    <select id="showEOrderPro" parameterType="map"  resultType="com.xinda.cn.vo.EOrderComment">
+    select  b.id order_id,NAME,sname,p.info,img,b.create_time,e_id,p.id
+     from product p,provider p1,business_order b
+    	where p1.id=p.code AND b.product_id=p.id
+            and  b.e_id=#{id}
+            and  comment_status=0
+  </select>
+  <!--  2. Commented -->
+    <select id="showEOrderProCommented" parameterType="map"  resultType="com.xinda.cn.vo.EOrderComment">
+    select  b.id order_id,NAME,sname,p.info,img,b.create_time,e_id,p.id
+     from product p,provider p1,business_order b
+    	where p1.id=p.code AND b.product_id=p.id
+            and  b.e_id=#{id}
+            and  comment_status=1
+  </select>
+    <select id="selectByExample2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  *
+    from business_order   where id=${id}
+  </select>
+  
+  <!--  改评价状态 -->
+    <update id="updateCommentStatus"  parameterType="java.lang.String"   >
+    update    business_order  
+       set  comment_status=1<!--需要和数据库保持一致，因为parameterType不是 ...BusinessOrderExample -->
+    	where id=${id}
+  </update>
+    <!--  改付款状态 -->
+    <update id="updateBuyStatus"  parameterType="java.lang.String"   >
+    update    business_order  
+       set  status=2<!--需要和数据库保持一致，因为parameterType不是 ...BusinessOrderExample -->
+    	where id=${id}
+  </update>
+   <select id="selectByPrimaryKeyId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from business_order
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <!--*************************************电商end*********************************************************************  -->
+  <!--======================开始====运营商========================  -->
+  <select id="selectOperByno"  parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"   resultMap="BaseResultMap">
+      select BUSINESS_NO,PRODUCT_ID,ORDER_INFO,UNIT_PRICE,CREATE_TIME,ename,id,status
+    from business_order
+    <if test="no!=null and no !=''">
+    		where  BUSINESS_NO like concat('%',${no},'%')
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+     <if test="pageStart>=0">
+	limit ${pageStart},${pageSize}	
+    </if>
+  </select> 
+     <select id="searchCount"  parameterType="map"  resultType="java.lang.Long">
+    select count(*) from business_order
+    <if test="no!=null and no !=''">
+    		where BUSINESS_NO like concat('%',${no},'%')
+    </if>
+  </select>
+  <!-- 新增  订单详情 -->
+  <select id="selectByBusinessOrderPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  id,business_no,ename,order_info,unit_price,create_time
+   <!--  <include refid="Base_Column_List" /> -->
+    from business_order
+    where ID = #{id,jdbcType=VARCHAR}
+      <!-- and STATUS = #{status,jdbcType=INTEGER} -->
+  </select>
+  
+ 
+  <!--======================结束============================  -->
+  
+  
+
   <select id="selectByExample" parameterType="com.xinda.cn.model.xinda.BusinessOrderExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -131,10 +225,14 @@
     where ID = #{id,jdbcType=VARCHAR}
       and STATUS = #{status,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.xinda.cn.model.xinda.BusinessOrderKey">
+<!--   <delete id="deleteByPrimaryKey" parameterType="com.xinda.cn.model.xinda.BusinessOrderKey">
     delete from business_order
     where ID = #{id,jdbcType=VARCHAR}
       and STATUS = #{status,jdbcType=INTEGER}
+  </delete> -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from business_order
+    where ID = #{id,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.xinda.cn.model.xinda.BusinessOrderExample">
     delete from business_order
@@ -144,13 +242,15 @@
   </delete>
   <insert id="insert" parameterType="com.xinda.cn.model.xinda.BusinessOrder">
     insert into business_order (ID, STATUS, BUSINESS_NO, 
-      PRODUCT_ID, ORDER_INFO, UNIT_PRICE, 
-      BUY_NUM, TOTAL_PRICE, PAY_TYPE, 
-      E_ID, CREATE_TIME)
+      PRODUCT_ID, ORDER_INFO, comment_status, 
+      UNIT_PRICE, BUY_NUM, TOTAL_PRICE, 
+      PAY_TYPE, E_ID, CREATE_TIME
+      )
     values (#{id,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{businessNo,jdbcType=VARCHAR}, 
-      #{productId,jdbcType=VARCHAR}, #{orderInfo,jdbcType=VARCHAR}, #{unitPrice,jdbcType=INTEGER}, 
-      #{buyNum,jdbcType=INTEGER}, #{totalPrice,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, 
-      #{eId,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE})
+      #{productId,jdbcType=VARCHAR}, #{orderInfo,jdbcType=VARCHAR}, #{commentStatus,jdbcType=INTEGER}, 
+      #{unitPrice,jdbcType=INTEGER}, #{buyNum,jdbcType=INTEGER}, #{totalPrice,jdbcType=INTEGER}, 
+      #{payType,jdbcType=INTEGER}, #{eId,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.xinda.cn.model.xinda.BusinessOrder">
     insert into business_order
@@ -169,6 +269,9 @@
       </if>
       <if test="orderInfo != null">
         ORDER_INFO,
+      </if>
+      <if test="commentStatus != null">
+        comment_status,
       </if>
       <if test="unitPrice != null">
         UNIT_PRICE,
@@ -204,6 +307,9 @@
       </if>
       <if test="orderInfo != null">
         #{orderInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null">
+        #{commentStatus,jdbcType=INTEGER},
       </if>
       <if test="unitPrice != null">
         #{unitPrice,jdbcType=INTEGER},
@@ -249,6 +355,9 @@
       <if test="record.orderInfo != null">
         ORDER_INFO = #{record.orderInfo,jdbcType=VARCHAR},
       </if>
+      <if test="record.commentStatus != null">
+        comment_status = #{record.commentStatus,jdbcType=INTEGER},
+      </if>
       <if test="record.unitPrice != null">
         UNIT_PRICE = #{record.unitPrice,jdbcType=INTEGER},
       </if>
@@ -279,6 +388,7 @@
       BUSINESS_NO = #{record.businessNo,jdbcType=VARCHAR},
       PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
       ORDER_INFO = #{record.orderInfo,jdbcType=VARCHAR},
+      comment_status = #{record.commentStatus,jdbcType=INTEGER},
       UNIT_PRICE = #{record.unitPrice,jdbcType=INTEGER},
       BUY_NUM = #{record.buyNum,jdbcType=INTEGER},
       TOTAL_PRICE = #{record.totalPrice,jdbcType=INTEGER},
@@ -300,6 +410,9 @@
       </if>
       <if test="orderInfo != null">
         ORDER_INFO = #{orderInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null">
+        comment_status = #{commentStatus,jdbcType=INTEGER},
       </if>
       <if test="unitPrice != null">
         UNIT_PRICE = #{unitPrice,jdbcType=INTEGER},
@@ -328,6 +441,7 @@
     set BUSINESS_NO = #{businessNo,jdbcType=VARCHAR},
       PRODUCT_ID = #{productId,jdbcType=VARCHAR},
       ORDER_INFO = #{orderInfo,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=INTEGER},
       UNIT_PRICE = #{unitPrice,jdbcType=INTEGER},
       BUY_NUM = #{buyNum,jdbcType=INTEGER},
       TOTAL_PRICE = #{totalPrice,jdbcType=INTEGER},
@@ -337,4 +451,101 @@
     where ID = #{id,jdbcType=VARCHAR}
       and STATUS = #{status,jdbcType=INTEGER}
   </update>
+  
+  <!--  *****************************运营商*******************************-->
+    <select id="getCount" parameterType="map"
+		resultType="java.lang.Integer">
+		select count(*) from business_order
+		<where>
+		<if test="name!=null and name!=''">
+			AND name like concat('%',#{name},'%')
+		</if>
+		<if test="time >=0">
+		AND date_sub(curdate(), interval #{time} day) <![CDATA[ <= ]]> date(create_time)
+		</if>
+		</where>
+	</select>
+	<select id="selectByfeiyongExample"
+		parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from business_order
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="name!=null and name!=''">
+			where name like concat('%',#{name},'%')
+		</if>
+		<if test="pageStart>=0">
+			limit ${pageStart},${pageSize}
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="timeByExample"
+		parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"
+		resultMap="BaseResultMap">
+		select *
+		from business_order where date_sub(curdate(), interval 7 day) <![CDATA[ <= ]]>
+		date(create_time)
+		<if test="_parameter!=null">
+			<include refid="Example_Where_Clause"></include>
+		</if>
+		<if test="pageStart>=0">
+			limit ${pageStart},${pageSize}
+		</if>
+		<if test="orderByClause">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="timetwoByExample"
+		parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"
+		resultMap="BaseResultMap">
+		select *
+		from business_order where date_sub(curdate(), interval 30 day) <![CDATA[ <= ]]>
+		date(create_time)
+		<if test="_parameter!=null">
+			<include refid="Example_Where_Clause"></include>
+		</if>
+		<if test="pageStart>=0">
+			limit ${pageStart},${pageSize}
+		</if>
+		<if test="orderByClause">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="timethreeByExample"
+		parameterType="com.xinda.cn.model.xinda.BusinessOrderExample"
+		resultMap="BaseResultMap">
+		select *
+		from business_order where date_sub(curdate(), interval 0 day) = date(create_time)
+		<if test="_parameter!=null">
+			<include refid="Example_Where_Clause"></include>
+		</if>
+
+		<if test="pageStart>=0">
+			limit ${pageStart},${pageSize}
+		</if>
+		<if test="orderByClause">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="sumPrice" parameterType="java.lang.Integer"
+		resultType="java.lang.String">
+		SELECT SUM(total_price) FROM business_order
+		<if test="time>=0">
+			WHERE DATE_SUB(CURDATE(), INTERVAL #{time} DAY) <![CDATA[ <= ]]>
+			DATE(create_time)
+		</if>
+	</select>
+	<select id="sumPrice1" resultType="java.lang.Integer">
+		SELECT SUM(total_price) FROM business_order
+	</select>
 </mapper>

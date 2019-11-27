@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>操作当当购物车页面</title>
+    <link type="text/css" rel="stylesheet" href="css/cartStyle.css" />
+    <script type="text/javascript" src="js/main.js"></script>
+    <!--
+        1- 添加 jquery的js库文件
+        2- 添加装有 jquery相关的个人编写的js文件，注意前后顺序
+    -->
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/mainJQuery.js"></script>
+</head>
+<body>
+
+<div class="content">
+    <div class="logo">
+        <img src="images/dd_logo.jpg"><span onclick="">关闭</span>
+    </div>
+    <div class="cartList" id="cartList">
+        <ul>
+            <li>商品图片</li>
+            <li>商品信息</li>
+            <li>单价</li>
+            <li>数量</li>
+            <li>总价</li>
+            <li>操作</li>
+        </ul>
+        <ul name="prodUl" class="prodUl">
+            <li><img src="images/dog.jpg"></li>
+            <li>我和狗狗活下来了</li>
+            <li>¥<span id="price01" class="myPrice" name="price">21.90</span></li>
+            <li>
+                <input type="button" name="minus" value="-" onclick="modifyPrice('minus',this)" disabled="disabled">
+                <input type="number" name="amount" class="myAmount" value="1">
+                <input type="button" name="plus" value="+" onclick="modifyPrice('add',this)">
+            </li>
+            <li>¥<span id="price0" name="prodTotalPrice" class="prodTotalPrice">21.90</span></li>
+            <li><p  onclick="">移入收藏</p><p onclick="delProd(this)">删除</p></li>
+        </ul>
+       
+                   
+        <ol>
+            <li>商品总计：<span id="totalPrice"></span></li>
+            <li><span>结 算</span></li>
+        </ol>
+    </div>
+</div>
+<script type="text/javascript">
+    totalPrice();
+</script>
+</body>
+</html>

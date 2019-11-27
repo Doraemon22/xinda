@@ -34,6 +34,7 @@ $(".login-btn").on("click", function(){
 		success: function(data){
 			console.log("成功后返回数据",data);
 			if(data.code == 1){
+				alert("找回密码成功！!");
 				location.href = "operator_login.html"
 			}
 			else{

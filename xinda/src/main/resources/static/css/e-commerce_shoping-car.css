@@ -1,3 +1,52 @@
+/* //分页样式 */
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    width:50%;
+}
+ul.pagination li {
+	display: inline;
+}
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+ul.pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;		/*solid	定义实线*/
+}
+ul.pagination li a:hover:not(.active) {
+	background-color: #ddd;
+}
+div.nowpage {
+	background-color:#aaaaaa;
+}
+div.center {
+	text-align: center;
+}
+
+
+/* ----------------------------------------------- */
+.article-info2 {
+    width: 200px;
+    margin-left: 2px;
+}
+.article-info2 li {
+    line-height: 30px;
+}
+.article-info2  li:nth-child(2) {
+    color: #999999;
+    font-size: 14px;
+}
+/*----------------------------------------------*/
+
+
 .font-aqua{
     color: #4eb5ba;
 }
@@ -126,8 +175,8 @@
 .merchandise li{
     width: 200px;
     text-align: center;
+    line-height: 38px;
     line-height: 28px;
-    line-height: 68px;
     font-size: 14px;
 }
 .merchandise li:nth-child(4){
@@ -135,7 +184,7 @@
     padding-top: 24px;
 }
 .merchandise li:nth-child(4) input{
-    width: 15px;
+    width: 30px;
     height: 16px;
     vertical-align: middle; 
 }

@@ -17,6 +17,16 @@ public class BusinessOrderExample {
     protected int pageSize;
     protected int pageStart;
     protected String no;
+ protected String name;
+    
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
     
     public int getPageSize() {
 		return pageSize;
@@ -501,6 +511,66 @@ public class BusinessOrderExample {
 
         public Criteria andOrderInfoNotBetween(String value1, String value2) {
             addCriterion("ORDER_INFO not between", value1, value2, "orderInfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusIsNull() {
+            addCriterion("comment_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusIsNotNull() {
+            addCriterion("comment_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusEqualTo(Integer value) {
+            addCriterion("comment_status =", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusNotEqualTo(Integer value) {
+            addCriterion("comment_status <>", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusGreaterThan(Integer value) {
+            addCriterion("comment_status >", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("comment_status >=", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusLessThan(Integer value) {
+            addCriterion("comment_status <", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("comment_status <=", value, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusIn(List<Integer> values) {
+            addCriterion("comment_status in", values, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusNotIn(List<Integer> values) {
+            addCriterion("comment_status not in", values, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusBetween(Integer value1, Integer value2) {
+            addCriterion("comment_status between", value1, value2, "commentStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andCommentStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("comment_status not between", value1, value2, "commentStatus");
             return (Criteria) this;
         }
 

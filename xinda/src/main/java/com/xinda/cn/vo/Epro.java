@@ -1,11 +1,20 @@
 package com.xinda.cn.vo;
 
-import org.springframework.web.multipart.MultipartFile;
 
 public class Epro {
 	private String id;//产品id
+	private String e_id;
+//	
 	public String getId() {
 		return id;
+	}
+
+	public String getE_id() {
+		return e_id;
+	}
+
+	public void setE_id(String e_id) {
+		this.e_id = e_id;
 	}
 
 	public void setId(String id) {
@@ -16,22 +25,21 @@ public class Epro {
 
 	private String sname;
 
-    private String img;
+    private byte[] img;
 
-    private String info;
+    public byte[] getImg() {
+		return img;
+	}
+
+	public void setImg(byte[] img) {
+		this.img = img;
+	}
+
+	private String info;
     
     private Integer mapket_price;
-    
 
-    private MultipartFile file;
 
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 
 	public Integer getMapket_price() {
 		return mapket_price;
@@ -57,13 +65,7 @@ public class Epro {
 		this.sname = sname;
 	}
 
-	public String getImg() {
-		return img;
-	}
 
-	public void setImg(String img) {
-		this.img = img;
-	}
 
 	public String getInfo() {
 		return info;

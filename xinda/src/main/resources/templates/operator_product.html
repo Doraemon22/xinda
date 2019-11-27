@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"><!--  xmlns:th="http://www.thymeleaf.org" -->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="./css/public.css">
-    <link rel="stylesheet" href="./css/header.css">
-    <link rel="stylesheet" href="./css/operator_product.css">
-    <link rel="stylesheet" href="./css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/element-ui_2.12.0.css">
+    <title>服务管理</title>
+    <link rel="stylesheet" href="/css/public.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/operator_product.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/element-ui_2.12.0.css">
 
-    <script src="./js/jquery-3.4.1.min.js"></script>
+    <script src="/js/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
+	<input type="hidden"  th:value="${count}"  id="count" />
+	<input type="hidden"   th:value="${pageSize}"  id="pageSize" />
+ 	<input type="hidden"  th:value="${pageStart}"  id="pageStart" />
     <div class="header">
         <div class="logo_info">
-            <img src="./images/logo.png" alt="logo">
+            <img src="/images/logo.png" alt="logo">
             <span class="platform_name">信达</span>
         </div>
         <ul class="user_info">
-                <li><a href="redirect?page=operator_product.html"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
-            <li><i class="fa fa-cube fa-fw"></i>业务管理</li>
+                <li> <a th:href="@{/findOperByname}"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
             <li>
-                <img src="./images/default_user.png">
+                <img src="/images/default_user.png">
                 <span>用户名字</span>
                 <i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
                 <ul class="dropdown">
@@ -38,41 +40,36 @@
     <div class="main">
         <ul class="main-nav">
             <li>
-                <a th:href="@{/findOperByno}"> <!--redirect?page=operator_orderform.html  -->
-<span class="search-btn"><i class="fa fa-shopping-cart fa-fw"></i></span>
+                <a th:href="@{/findOperByno}"> 
+                <span class="search-btn"><i class="fa fa-shopping-cart fa-fw"></i></span>
                     <p>订单</p>
                 </a>
             </li>
             <li>
-                <a href="redirect?page=operator_user.html">
+                <a th:href="@{/findOperByusername}">
                     <i class="fa fa-user fa-fw"></i>
                     <p>用户</p>
                 </a>
             </li>
             <li>
-                <a href="redirect?page=operator_facilitator.html">
+                <a th:href="@{/findByServicename}">
                     <i class="fa fa-tasks fa-fw"></i>
                     <p>服务商</p>
                 </a>
             </li>
             <li>
-                <a href="redirect?page=operator_expenses.html">
+                <a th:href="@{/feiyong} ">
                     <i class="fa fa-cny fa-fw"></i>
                     <p>费用中心</p>
                 </a>
             </li>
             <li>
-                <a href="redirect?page=operator_recommend.html">
+                <a th:href="@{/findByRecommendname}">
                     <i class="fa fa-star fa-fw"></i>
                     <p>优质推荐</p>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>
-                    <p>统计分析</p>
-                </a>
-            </li>
+            
         </ul>
         <div class="main-details">
             <div class="main-top">
@@ -85,62 +82,67 @@
             </div>
             <div class="main-content">
                 <div class="search">
-                    <input placeholder="服务名称" /><button><i class="fa fa-search fa-fw"></i></button>
+                    <input placeholder="服务名称"  id="name" name="name"  th:value="${name}"/><button><span class="search-btn"><i class="fa fa-search fa-fw"></i></span></button>
                 </div>
                 <div class="product-action">
-                    <span class="up-line"><i class="fa fa-arrow-up fa-fw"></i>上线</span>
-                    <span class="down-line"><i class="fa fa-plus fa-fw"></i>下线</span>
+                   <!--  <span class="up-line"><i class="fa fa-arrow-up fa-fw"></i>上线</span>
+                    <span class="down-line"><i class="fa fa-plus fa-fw"></i>下线</span> -->
                 </div>
             </div>
+             <form action="/findOperByname">
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" class="checkbox"></th>
+                        <th></th>
                         <th>产品名称</th>
                         <th>说明</th>
                         <th>市场价格</th>
-                        <th>排序<i class="fa fa-long-arrow-up fa-fw"></i></th>
-                        <th>状态</th>
-                        <th>操作</th>
+                        <!-- <th>状态</th> -->
+                        <th width="300">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox" class="checkbox"></td>
-                        <td>电视剧作品登记</td>
-                        <td>电视剧作品登记</td>
-                        <td>¥10000.00元</td>
+                    <tr th:each="oper:${oper1}" >
                         <td></td>
-                        <td><span class="down-line-mark down-line-mark-orange">下线</span></td>
+                        <td th:text="${oper.name}"></td>
+                        <td th:text="${oper.info}"></td>
+                        <td th:text="${oper.mapketPrice}"></td>
+                        
+                        <!-- <td><span class="down-line-mark down-line-mark-orange">下线</span></td> -->
                         <td>
+                        	<a th:href="@{'/updateSproQ?id='+${oper.id}}">
                             <span class="handle-btn"><i class="fa fa-edit fa-fw"></i>编辑</span>
+                            </a>
+                            <a th:href="@{'/deleteOSproById?id='+${oper.id}}">
                             <span class="handle-btn"><i class="fa fa-close fa-fw"></i>删除</span>
-                            <span class="handle-btn"><i class="fa fa-arrow-up fa-fw"></i>上线</span>
+                            </a>
+                            <!-- <span class="handle-btn"><i class="fa fa-arrow-up fa-fw"></i>上线</span> -->
                         </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="checkbox"></td>
-                        <td>电视剧作品登记</td>
-                        <td>电视剧作品登记</td>
-                        <td>¥10000.00元</td>
-                        <td></td>
-                        <td><span class="up-line-mark up-line-mark-red">在线</span></td>
-                        <td><span class="handle-btn"><i class="fa fa-arrow-down fa-fw"></i>下线</span></td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="checkbox"></td>
-                        <td>电视剧作品登记</td>
-                        <td>电视剧作品登记</td>
-                        <td>¥10000.00元</td>
-                        <td></td>
-                        <td><span class="up-line-mark up-line-mark-red">在线</span></td>
-                        <td><span class="handle-btn"><i class="fa fa-arrow-down fa-fw"></i>上线</span></td>
                     </tr>
                 </tbody>
             </table>
+            </form>
+            <div class="main-pagination" 
+    	            th:with="pageNext=${pageStart}+${pageSize},
+			       pagePre=${pageStart}-${pageSize},
+					modPage=${count}%${pageSize},
+					lastPage1=${count}-${modPage},
+					lastPage=${count}-${pageSize}">
+		<ul class="pagination">
+			<span><a th:href="@{'/findOperByname?pageStart=' + 0+'&name='+${name}}">首页</a></span>
+			<span th:if="${pagePre} ge '0'"><a th:href="@{'/findOperByname?pageStart=' + ${pagePre}+'&name='+${name}}">«</a></span>
+			<span class="main-pagination-page"><div id="mydiv"></div></span>
+			<span th:if="${pageNext} lt ${count}"><a th:href="@{'/findOperByname?pageStart=' + ${pageNext}+'&name='+${name}}">»</a></span>
+			<span th:if="${modPage} eq '0'"><a th:href="@{'/findOperByname?pageStart=' + ${lastPage}+'&name='+${name}}">末页</a></span>
+			<span th:unless="${modPage} eq '0'"><a th:href="@{'/findOperByname?pageStart=' + ${lastPage1}+'&name='+${name}}">末页</a></span>
+		</ul >
+		<ul class="pagination">
+		<li>共<span th:text="${count}"></span>条记录</li>
+		</ul>
+		</div> 
         </div>
     </div>
-    <script src="./js/operator_product.js"></script>
+	<script src="/js/operator_product.js"></script>
 </body>
 
 </html>

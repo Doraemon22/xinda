@@ -12,13 +12,11 @@
     <link rel="stylesheet" href="./css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/element-ui_2.12.0.css">
 
-    <script src="./js/jquery-3.4.1.min.js"></script>
+    <script src="../js/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
-	<input type="hidden" th:value="${count}" id="count"/>
-	<input type="hidden" th:value="${pageSize}" id="pageSize"/>
-	<input type="hidden" th:value="${pageStart}" id="pageStart"/>
+	
     <div class="header">
         <div class="logo_info">
             <img src="./images/logo.png" alt="logo">
@@ -26,15 +24,12 @@
         </div>
         <ul class="user_info">
             <li><a th:href="@{/findSproByName}"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
-            <li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
-            <li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>
             <li>
                 <img src="./images/default_user.png">
-                <span>用户名字</span>
+                <span id="provider">用户:</span>
                 <i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
                 <ul class="dropdown">
-                    <li>更改信息</li>
-                    <li>退出登录</li>
+                    <a href="service_login.html">退出</a>
                 </ul>
             </li>
         </ul>
@@ -42,7 +37,7 @@
     <div class="main">
         <ul class="main-nav">
             <li>
-                <a href="#">
+                <a th:href="@{/findSproByName}">
                     <i class="fa fa-home fa-fw"></i>
                     <p>主页</p>
                 </a>
@@ -53,12 +48,13 @@
                     <p>订单</p>
                 </a>
             </li>
-            <li>
+            <!-- <li>
+            <a href="#" οnclick="document.getElementById('service_expenses.html').submit();">
                 <a href="redirect?page=service_expenses.html">
                     <i class="fa fa-cny fa-fw"></i>
                     <p>费用</p>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="redirect?page=service_store.html">
                     <i class="fa fa-institution fa-fw"></i>
@@ -66,7 +62,7 @@
                 </a>
             </li>
             <li>
-                <a href="redirect?page=service_setting.html">
+                <a href="/providerInfo">
                     <i class="fa fa-cog fa-fw"></i>
                     <p>设置</p>
                 </a>
@@ -86,14 +82,20 @@
             </ul>
             <div class="main-content">
                 <div class="search">
-                <input placeholder="服务名称"  name="name" id="name" th:value="${name}"/>
+                <form action="findSproByName">
+                <input placeholder="服务名称"  name="name"  id="name"  th:value="${name}"/>
                    <span class="search-btn"><button ><i class="fa fa-search fa-fw"></i></button></span>
+                </form>
+                <input type="hidden" th:value="${count}" id="count"/>
+				<input type="hidden" th:value="${pageSize}" id="pageSize"/>
+				<input type="hidden" th:value="${pageStart}" id="pageStart"/>
                 </div>
+          
                 <div class="product-action">
                     <span class="add-product-action"><i class="fa fa-plus fa-fw"></i>添加服务产品</span>
                 </div>
-            </div>
-        <form action="findSproByName">   <!--============= 显示所有产品的表单= 名称，内容，价格============= -->
+            </div>           
+        <!-- <form action="proshow"> -->
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
                 <tr >
@@ -109,56 +111,75 @@
                         <td  th:text="${pro.name}" >服务名称</td>
                         <td  th:text="${pro.info}" >服务内容</td>
                         <td th:text="${pro.mapketPrice}"  >价格</td>
-                        <td><span class="down-line-mark down-line-mark-orange">下线</span></td>
+                        
+                      
+							
+                    <td><span class="down-line-mark down-line-mark-orange">添加图片</span> 
+                    
+                    <!-- <form action="/saveUserImg" method="post" enctype ="multipart/form-data"> -->
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="imgto"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                   <!--  </form>  --> 
+             	                       
+                        </td>
                         <td>
+                       	
+                        	 <a th:href="@{'/updateSproInfoQ?id='+${pro.id}}">
                             <span class="handle-btn"><i class="fa fa-edit fa-fw"></i>编辑</span>
-                            <span class="delete-btn"><button><i class="fa fa-close fa-fw"></i>删除</button></span>
-                            <span class="handle-btn"><i class="fa fa-arrow-up fa-fw"></i>上线</span>
+                             </a> 
+                                                                              	   				                     
+                    	    <a th:href="@{'/deleteSproById?id='+${pro.id}}">
+                    	    	<span class="handle-btn"><i class="fa fa-close fa-fw"></i>删除</span>
+                    	    </a>
+                            
+                            <!-- <span class="handle-btn"><i class="fa fa-arrow-up fa-fw"></i>上线</span> -->
                         </td>
                     </tr>
-<table border="0" cellspacing="0" cellpadding="0">                
- <div class="main-pagination" 
-    	            th:with="pageNext=${pageStart}+${pageSize},
+                    </table>              
+<div class="main-pagination" 
+    	         th:with="pageNext=${pageStart}+${pageSize},
 			       pagePre=${pageStart}-${pageSize},
 					modPage=${count}%${pageSize},
 					Pagelast=${count}-${modPage},
 					lastPage=${count}-${pageSize}">
-		<ul class="pagination">
-								<span><a th:href="@{'/findSproByName?pageStart=' + 0+'&name='+${name}}">首页</a></span>
-                    			<span th:if="${pagePre} ge '0'"><a th:href="@{'/findSproByName?pageStart='+${pagePre}+'&name='+${name}}">上一页</a></span>
-                    			<span class="main-pagination-page"><div id="mydiv"></div></span>                			
-                    			<span th:if="${pageNext} lt ${count}"><a th:href="@{'/findSproByName?pageStart='+${pageNext}+'&name='+${name}}">下一页</a></span>
-                    			<span th:if="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${lastPage}+'&name='+${name}}">末页</a></span>
-                    			<span th:unless="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${Pagelast}+'&name='+${name}}">末页</a></span>
-		</ul>
+		<tr class="pagination">
+								<td><a th:href="@{'/findSproByName?pageStart=' + 0+'&name='+${name}}">首页</a></td>
+                    			<td><span th:if="${pagePre} ge '0'"><a th:href="@{'/findSproByName?pageStart='+${pagePre}+'&name='+${name}}">上一页</a></span></td>
+                    			<td><span class="main-pagination-page"><div id="mydiv"></div></span>  </td>          			
+                    			<td><span th:if="${pageNext} lt ${count}"><a th:href="@{'/findSproByName?pageStart='+${pageNext}+'&name='+${name}}">下一页</a></span></td>
+                    			<td><span th:if="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${lastPage}+'&name='+${name}}">末页</a></span></td>
+                    			<td><span th:unless="${modPage} eq '0'"><a th:href="@{'/findSproByName?pageStart=' + ${Pagelast}+'&name='+${name}}">末页</a></span></td>                 			                   		
+		</tr>
 		<ul class="pagination">
 		<li>共<span th:text="${count}"></span>条记录</li>
 		
 		</ul >
-                    		</div> 
-                    		</table>                          
+                    		</div>                		                      
               <!--       <tr>
                        
                         <td><span class="up-line-mark up-line-mark-red">在线</span></td>
                         <td><span class="handle-btn"><i class="fa fa-arrow-down fa-fw"></i>下线</span></td>
                     </tr> -->            
                 </tbody>
-            </table>
-            </form>
+            
+<!--             </form> -->
         </div>
     </div>
-     <form action="addProduct">
+    
+                
+     <form action="addProduct" method="post">
+     <input type="hidden"  name="id"  th:value="${result?.slideshow?.id}" value="">
     <div class="masking">
-        <div class="scroller">
+        <div class="scroller">       
             <h3>添加服务产品</h3>
             <ul>
-                <li>
-                    <span>图片简介</span>
-                    <button>选择图片</button>
-                </li>
-                  <li>
-                    <span>编号</span>
-                    <input placeholder="请输入服务编号"  name="id"/>
+           		 
+                 <li>
+                    <span>服务商号</span>
+                    <input placeholder="请输入服务商编号"  name="code"/>
                 </li>
                 <li>
                     <span>服务名称</span>
@@ -180,7 +201,7 @@
         </div>
     </div>         
    </form>
-    <script src="./js/service_product.js"></script>
+    <script src="../js/service_product.js"></script>
 </body>
 
 </html>

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.xinda.cn.model.xinda.ServiceOrder;
+import com.xinda.cn.model.xinda.ServiceOrderExample;
 import com.xinda.cn.service.SOrderService;
 import com.xinda.cn.vo.SOrder;
 
@@ -14,6 +17,8 @@ import com.xinda.cn.vo.SOrder;
 public class SOrderController {
 	@Resource 
 	  SOrderService sOrderService;
+	@Resource 
+	  ServiceOrderExample example;
 	
 //	@RequestMapping("/sorderfenye")
 //	//@RequestParam 必须是基本数据类型，不赋初始值，容易报错，用此注解赋默认值
@@ -52,8 +57,13 @@ public class SOrderController {
 	    return "service_orderform";
 	}
 	
-	
-	
-	
+	@RequestMapping("/showSordInfo")
+	public String showSordInfo(String id,Model model){
+		ServiceOrder sorder=sOrderService.selectByPrimaryKey(id);
+		model.addAttribute("sorder", sorder);
+		return "sorder_info";
+		
+	}
+
 }
 

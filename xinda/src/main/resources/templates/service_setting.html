@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http//www.thymeleaf.org" >
 
 <head>
     <meta charset="UTF-8">
@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="./css/service_setting.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/element-ui_2.12.0.css">
+    <script type="text/javascript" src="./js/Address.js"></script>
 
-    <script src="./js/jquery-3.4.1.min.js"></script>
+    <script src="../js/jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
@@ -23,23 +24,24 @@
         </div>
         <ul class="user_info">
             <li><a th:href="@{/findSproByName}"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
-            <li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
-            <li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>
+            <!-- <li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
+            <li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>  -->        
             <li>
                 <img src="./images/default_user.png">
-                <span>用户名字</span>
+                <span >公司名称</span>
                 <i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
                 <ul class="dropdown">
-                    <li>更改信息</li>
-                    <li>退出登录</li>
+                    <!-- <li>更改信息</li> -->
+                    <a href="service_login.html">退出登录</a>
                 </ul>
+                <li><input name="sname" th:value="${provider.sname}"  value="" readonly/></li>
             </li>
         </ul>
     </div>
     <div class="main">
         <ul class="main-nav">
             <li>
-                <a href="#">
+                <a th:href="@{/findSproByName}">
                     <i class="fa fa-home fa-fw"></i>
                     <p>主页</p>
                 </a>
@@ -50,12 +52,12 @@
                     <p>订单</p>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="redirect?page=service_expenses.html">
                     <i class="fa fa-cny fa-fw"></i>
                     <p>费用</p>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="redirect?page=service_store.html">
                     <i class="fa fa-institution fa-fw"></i>
@@ -63,7 +65,8 @@
                 </a>
             </li>
             <li class="bg-red">
-                <a href="redirect?page=service_setting.html">
+                <!-- <a th:href="@{'/infoshow?id='+#{id}}"> -->
+                <a href="/providerInfo">
                     <i class="fa fa-cog fa-fw"></i>
                     <p>设置</p>
                 </a>
@@ -81,110 +84,120 @@
             <ul class="main-tab">
                 <li class="border-red order1">服务商信息</li>
             </ul>
-            <form action="showprovider">
-            <div class="main-content" id="main" style="width:100%;">
-                <div class="avatars" id="left" style="width:5%;float:left">
-                    <img src="" alt="用户头像">
-                    <p>更换头像</p>
+            <div class="main-content">
+                <div class="avatars">
+                <!-- <div class="proinfo"> -->
+                   <!--  <img class = "headImg2" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">             
+                    <p>更换头像</p> -->
+                    
+                     <li>
+                <p>更换头像</p>
+                    <img class = "imgshow" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">
+                </li>
+                <li>
+                    <form action="/saveUserImg2" method="post" enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="imgto"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>                       
+                </li>
                 </div>
                 <ul class="store-info">
-                <div id="center" style="width:25%;float:left">
-                	<li><span>服务商名称</span></li>
-                	<li><span>地区</span></li>
-                	<li><span>手机号</span></li>
-                	<li><span>微信</span></li>
-                	<li><span>QQ</span></li>
-                	<li><span>邮箱</span></li>
-                	<li>
-                        <button class="change-info">修改</button>
-                    </li>
-                </div>
-                <div id="right" style="width:70%;float:left">
-                	<tr th:each="provider :${provider}" >
-                        <td th:text="${provider.name}" >服务商名称</td>
-                        <td th:text="${provider.regionId}" >地区</td>
-                        <td th:text="${provider.cellphone}"  >手机号</td>
-                        <td th:text="${provider.weixin}"  >微信</td>      
-                        <td th:text="${provider.qq}"  >QQ</td>     
-                        <td th:text="${provider.emall}"  >邮箱</td>                       
-                </div>
-                </form>
-                    <!-- <li>
+                    <li>
                         <span>服务商名称</span>
-                        <span>云智汇咨询服务有限公司</span>
+                        <input th:value="${provider.sname}" readonly/>
                     </li>
                     <li>
                         <span>地区</span>
-                        <span>北京-朝阳区</span>
+                        <input th:value="${provider.regionId}" readonly/>
                     </li>
                     <li>
                         <span>手机号</span>
-                        <span>18912345678</span>
+                        <input th:value="${provider.cellphone}" readonly/>
                     </li>
                     <li>
                         <span>微信</span>
-                        <span></span>
+                        <input th:value="${provider.weixin}" readonly/>
                     </li>
                     <li>
                         <span>QQ</span>
-                        <span>10001</span>
+                        <input th:value="${provider.qq}" readonly/>
                     </li>
                     <li>
                         <span>邮箱</span>
-                        <span>10001@qq.com</span>
+                        <input th:value="${provider.emall}" readonly/>
                     </li>
+                    
+                     <li><span>id</span>
+                 		 <input  name=" id"  type="text" class=" id hidePid"  value=""  readonly/>
+               		 </li>
+               		 
                     <li>
-                        <button class="change-info">修改</button>
-                    </li> -->
+                       <button class="change-info">修改</button>
+                    </li>
                 </ul>
             </div>
             <div class="main-sercive">银行信息。。</div>
         </div>
     </div>
+    <form action="/updateProInfo">
+    <input name="id" type="hidden"  th:value="${provider.id}"/> 
     <div class="masking">
         <div class="scroller">
-            <h3>添加服务产品</h3>
+            <h3>修改服务产品</h3>
             <ul>
-                <li>
+                <!-- <li>
                     <span>头像</span>
+                    <img class = "headImg2" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">
                     <button>选择图片</button>
                 </li>
                 <li>
-                    <span>服务商名称</span>
-                    <input placeholder="请输入服务名称" />
-                </li>
+                    <form action="/saveUserImg2" method="post" enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="input2"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>                       
+                </li> -->
                 <li>
-                    <span class="ver-top">选择地区</span>
-                    <select name="" id="">
-                        <option value="">省</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">市</option>
-                    </select>
-                    <select name="" id="">
-                        <option value="">区</option>
-                    </select>
+                    <span>服务商名称</span>
+                    <input name="sname" placeholder="请输入服务名称" th:value="${provider.sname}"/>
                 </li>
+                <!-- <li>
+                <form action="/saveUserImg2">
+                <span class="ver-top">选择地区</span>
+			   	<select id="cmbProvince"  name="cmbProvince"></select>
+				 <select id="cmbCity"  name="cmbCity" ></select>
+				  <select id="cmbArea"  name="cmbArea"></select>
+				   <script type="text/javascript">
+				   addressInit('cmbProvince', 'cmbCity', 'cmbArea', '省', '市',
+							'县');
+				</script></li> -->
                 <li>
                     <span class="ver-top">手机号</span>
-                    <input type="text" placeholder="请输入手机号">
+                    <input name="cellphone" type="text" placeholder="请输入手机号" th:value="${provider.cellphone}"/>
                 </li>
                 <li>
                     <span class="ver-top">微信</span>
-                    <input type="text" placeholder="请输入微信">
+                    <input name="weixin" type="text" placeholder="请输入微信" th:value="${provider.weixin}"/>
                 </li>
                 <li>
                     <span class="ver-top">QQ</span>
-                    <input type="text" placeholder="请输入QQ">
+                    <input name="qq" type="text" placeholder="请输入QQ" th:value="${provider.qq}"/>
                 </li>
                 <li>
                     <span class="ver-top">邮箱</span>
-                    <input type="text" placeholder="请输入邮箱">
+                    <input name="emall" type="text" placeholder="请输入邮箱" th:value="${provider.emall}"/>
                 </li>
             </ul>
             <button class="save">提交</button>
             <button class="cancel">取消</button>
         </div>
+        </div>
+</form>
         <script src="./js/service_setting.js"></script>
 </body>
 
