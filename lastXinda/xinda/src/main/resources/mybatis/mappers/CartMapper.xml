@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinda.cn.dao.mapper.CartMapper">
+  <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.Cart">
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="E_ID" jdbcType="VARCHAR" property="eId" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="NUM" jdbcType="VARCHAR" property="num" />
+    <result column="TOTAL_PRICE" jdbcType="VARCHAR" property="totalPrice" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, E_ID, PRODUCT_ID, NUM, TOTAL_PRICE
+  </sql>
+  <!-- ============showCartProList=========== -->
+ <select  id="showCartProList" parameterType="map" resultType="com.xinda.cn.vo.ECart">
+  	select  * 
+  	from cart,product p,provider p1
+    	where product_id=p.id and code=p1.id
+  		
+  		<if test="example.pageStart>=0">
+  		  limit #{example.pageStart},#{example.pageSize}
+  		</if> 
+  		<if test="example.orderByClause!=null">
+  			order by #{example.orderByClause}
+  		</if>
+  </select>
+    <update id="updateCarInfoById"  parameterType="java.lang.String"   >
+    update    cart
+     <set>
+     TOTAL_PRICE = #{money,jdbcType=VARCHAR},
+       NUM = #{pnum,jdbcType=VARCHAR}
+     </set>  
+    	where id=${cartid}
+  </update>
+  
+   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cart
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <!-- ===================完！==================== -->
+  
+  
+  <select id="selectByExample" parameterType="com.xinda.cn.model.xinda.CartExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.xinda.cn.model.xinda.CartExample">
+    delete from cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.cn.model.xinda.Cart">
+    insert into cart (ID, E_ID, PRODUCT_ID, 
+      NUM, TOTAL_PRICE)
+    values (#{id,jdbcType=VARCHAR}, #{eId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+      #{num,jdbcType=VARCHAR}, #{totalPrice,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.cn.model.xinda.Cart">
+    insert into cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="eId != null">
+        E_ID,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="num != null">
+        NUM,
+      </if>
+      <if test="totalPrice != null">
+        TOTAL_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="eId != null">
+        #{eId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.cn.model.xinda.CartExample" resultType="java.lang.Long">
+    select count(*) from cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cart
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eId != null">
+        E_ID = #{record.eId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null">
+        PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.num != null">
+        NUM = #{record.num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalPrice != null">
+        TOTAL_PRICE = #{record.totalPrice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cart
+    set ID = #{record.id,jdbcType=VARCHAR},
+      E_ID = #{record.eId,jdbcType=VARCHAR},
+      PRODUCT_ID = #{record.productId,jdbcType=VARCHAR},
+      NUM = #{record.num,jdbcType=VARCHAR},
+      TOTAL_PRICE = #{record.totalPrice,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

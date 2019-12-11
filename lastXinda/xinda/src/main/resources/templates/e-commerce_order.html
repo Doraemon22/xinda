@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/e-commerce_order.css">
+    <script src="./js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="headder-top">
+        <div class="width1200 headder-top-content">
+            <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！<span class="user-quit"><a href="redirect?page=index" >[退出]</a></span></div>
+            <ul>
+                <li><a th:href="@{/showCart}" ><i class="fa fa-shopping-cart fa-lg"></i>
+                        购物车<span>1</span>件</a></li>
+                <li> <a th:href="@{/OrderShow}" >
+                        <i class="fa fa-file-text-o fa-lg" ></i>我的订单<span th:text="${count}">件</span>
+                    </a></li>
+               <!--  <li>服务商入口</li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="logo-search width1200">
+        <img class="logo" src="./images/logo-blue.png" />
+        <ul class="search">
+            <li>
+                <span class="search-product font-aqua">产品</span>丨
+                <span class="search-service">服务商</span>
+            </li>
+            <li>
+                <input placeholder="搜索您需要的服务或服务商" type="text"><span class="search-btn"><i
+                        class="fa fa-search fa-2x"></i></span>
+            </li>
+            <li>
+                热门服务：<span>社保开户</span> <span>公司注册</span>
+            </li>
+        </ul>
+        <img class="tel" src="./images/xinda-tel.png" alt="">
+    </div>
+    <ul class="banner width1200">
+        <li><a th:href="@{ePageProlist}"  class="border-b">全部产品</a></li><!-- e-commerce_product.html -->
+    </ul>
+    <div class="line-aqua"></div>
+    <div class="content width1200">
+        <div class="content-left">
+             <div class="userinfo">
+             <img class = "imgshow"  src = "/images/user-lg.png"  style="width:100px;height:90px;" onerror="defaultImg(this)"/>
+            </div>
+            <ul class="user-action">
+                <li><a class="bg-gray" th:href="@{/OrderShow}"  >
+                <!-- <a th:href="@{/OrderShow}" >href="redirect?page=e-commerce_order"  -->
+                <i class="fa fa-file-text-o fa-lg"></i> 我的订单</a></li>
+                <li><a href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i> 用户评价</a></li>
+                <li><a href="redirect?page=e-commerce_set" ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li>
+            </ul>
+        </div>
+
+        <div class="content-right"   >
+            <p class="product_num font-aqua">订单详情</p>
+            <hr color="#ededed" size="1">
+          	<!-- 	<ul class="order-search">
+				<li><span>订单号：</span>
+				 <input type="text" placeholder="请输入订单号搜索"  name="eorderid"  id="eorderid"/> th:value="${eorderid}" 
+					<span class="searchByEorderid">搜索</span>
+				</li>
+				<li><span>创建时间：</span> 
+				 <input name = "startTime" class="startTime" type="date" value=""> -
+				 <input name = "endTime" class="endTime" type="date" value=""></li>
+			</ul> -->
+            <ul class="order-title">
+                <li >商品名称</li>
+                <li  >单价</li>
+                <li >数量</li>
+                <li  >总金额</li>
+                <li   >订单状态</li>
+                <li >订单操作</li>
+            </ul>
+
+            <!--     <div class="orderList"></div> -->
+                   <div class="orderList">
+            	<div class="orders" th:each="showMyOrder:${showMyOrder}">
+                	<div class="order-num">订单号：<span class="orderId" th:text="${showMyOrder.business_no}"></span> 下单时间：<span class="createTime" th:text="${showMyOrder.create_time}"></span></div>
+                	<ul class="order-details">
+                    	<li>
+                       <img th:src="@{'/commentProImgShow?pid='+${showMyOrder.product_id}}"  alt="图片" />
+                        	<ul>
+                        		<li  th:text="${showMyOrder.sname}" >公司名称</li>
+						     	<li  th:text="${showMyOrder.name}" >名称</li>
+                        	</ul>
+                        		<p>¥<span class="price" th:text="${showMyOrder.mapket_price}"></span></p>
+                        		<p  th:text="${showMyOrder.buy_num}" >num</p>
+                    	</li>
+                   	 	<li class="font-aqua">¥<span class="totalPrice"  th:text="${showMyOrder.mapket_price}*${showMyOrder.buy_num}"></span></li>
+                    	<li class="font-aqua" th:if="${showMyOrder.status} eq '2' ">已付款</li>
+                   	 	<li class="font-aqua" th:if="${showMyOrder.status} eq '1' ">未付款</li>
+                   	 	<li th:if="${showMyOrder.status} eq '2' ">
+                    		<i>交易完成</i>
+                    		<!-- <span class="deleteOrder">删除订单</span> -->
+                   	 	</li>
+                   	 	<li th:if="${showMyOrder.status} eq '1' ">
+<!--   data-id自定义的属性,以便于点击的时候能够传递参数 -->
+                        	<p class="payment"><a th:data-id="${showMyOrder.business_no}" th:onclick="pay(this.getAttribute('data-id'))">付款</a></p>
+                        	<span class="deleteOrder"><a th:data-id="${showMyOrder.business_no}" th:onclick="deleteMyOrder(this.getAttribute('data-id'))">放下了</a></span>
+                  	  		
+                  	  	</li>
+                	</ul>
+            	</div>
+            </div>
+         </div>
+    </div>
+
+   <script src="./js/e-commerce_order.js"></script>
+</body>
+
+</html>

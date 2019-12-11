@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/e-commerce_account.css">
+
+    <script src="./js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="headder-top">
+        <div class="width1200 headder-top-content">
+          <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！
+          <span class="user-quit"><a href="redirect?page=index" >[退出]</a></span></div>
+            <ul>
+                <li><a th:href="@{/showCart}" ><i class="fa fa-shopping-cart fa-lg"></i>
+                        购物车<span>1</span>件</a></li>
+                <li> <a th:href="@{/OrderShow}" >
+                			<i  class="fa fa-file-text-o fa-lg"></i> 我的订单
+                    </a></li>
+             <!--    <li>服务商入口</li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="logo-search width1200">
+        <img class="logo" src="./images/logo-blue.png" />
+        <ul class="search">
+            <li>
+                <span class="search-product font-aqua">产品</span>丨
+                <span class="search-service">服务商</span>
+            </li>
+            <li>
+                <input placeholder="搜索您需要的服务或服务商" type="text"><span class="search-btn"><i
+                        class="fa fa-search fa-2x"></i></span>
+            </li>
+            <li>
+                热门服务：<span>社保开户</span> <span>公司注册</span>
+            </li>
+        </ul>
+        <img class="tel" src="./images/xinda-tel.png" alt="">
+    </div>
+    <ul class="banner width1200">
+        <li><a th:href="@{ePageProlist}"  class="border-b">全部产品</a></li>
+    </ul>
+    <div class="line-aqua"></div>
+    <div class="content width1200">
+        <div class="content-left">
+            <div class="userinfo">
+             <img class = "imgshow"  src = "/images/user-lg.png"  style="width:100px;height:90px;" onerror="defaultImg(this)"/>
+            </div>
+            <ul class="user-action">
+                <li><a th:href="@{/OrderShow}"  ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
+                </li>
+                <li><a  href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i>
+                        用户评价</a></li>
+                <li><a class="bg-gray"  href="redirect?page=e-commerce_set"  ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li>
+            </ul>
+        </div>
+        <div class="content-right">
+            <ul class="content-banner width1200">
+                <li class="border-b1">账户设置</li>
+                <li>修改密码</li>
+            </ul>
+            <div class="line-aqua"></div>
+            <ul class="change-password">
+                <li>
+                    <span>旧密码：</span>
+                    <input type="password"  class="password_old"/>
+                </li>
+                <li>
+                    <span>新密码：</span>
+                    <input class="new"  type="password" />
+                </li>
+                <li>
+                    <span>再次输入新密码：</span>
+                    <input class="password_new2" type="password" />
+                </li>
+                 <li>
+                  <input  name=" id"  type="hidden"  class=" id hideEid"  value = ""/>
+                </li>
+                <li>
+                    <p class="save  password">保存</p>
+                </li>
+            </ul>
+            <ul class="account-info" >
+                <li>
+                    <span>当前头像：</span>
+                    <img class = "imgshow" src = "/images/user-lg.png"  style="width:100px;height:100px;" onerror="defaultImg(this)"/>
+                       </li>
+                       <li>
+                       
+                    <form action="/saveUserImg" method="post"  enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="input2"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>
+                 
+                </li>
+                <li>
+                    <span>性别：</span>
+                    <input class="radio" type="radio" name="sex"  value = "男"/> 男 
+                    <input class="radio" type="radio" name="sex" value = "女"/> 女
+                </li>
+             
+                <li>
+                    <span >姓名：</span>
+                    <input type="text"  name="name"  class="name ejsname" value=""/>
+                </li>
+                <li>
+                    <span>邮箱：</span>
+                    <input type="text"  name="email" class="email ejsemail"/>
+                </li>
+                <li>
+                  <input  name=" id"    type="hidden" class=" id hideEid"  value = ""/>
+                </li>
+             <li>
+                    <p class="save information">保存</p>
+             </li>
+            </ul>
+        </div>
+
+        <script src="./js/e-commerce_set.js"></script>
+</body>
+
+</html>

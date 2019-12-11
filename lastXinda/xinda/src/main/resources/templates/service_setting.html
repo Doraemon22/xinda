@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/service_setting.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/element-ui_2.12.0.css">
+    <script type="text/javascript" src="./js/Address.js"></script>
+
+    <script src="../js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo_info">
+            <img src="./images/logo.png" alt="logo">
+            <span class="platform_name">信达</span>
+        </div>
+        <ul class="user_info">
+            <li><a th:href="@{/findSproByName}"><i class="fa fa-cog fa-fw"></i>服务管理</a></li>
+            <!-- <li><i class="fa fa-shopping-cart fa-fw"></i>新订单(0)</li>
+            <li><i class="fa fa-bell-o fa-fw"></i>通知(0)</li>  -->        
+            <li>
+                <img src="./images/default_user.png">
+                <span >公司名称</span>
+                <i class="fa fa-chevron-down fa-fw user-arrow-down"></i>
+                <ul class="dropdown">
+                    <!-- <li>更改信息</li> -->
+                    <a href="service_login.html">退出登录</a>
+                </ul>
+                <li><input name="sname" th:value="${provider.sname}"  value="" readonly/></li>
+            </li>
+        </ul>
+    </div>
+    <div class="main">
+        <ul class="main-nav">
+            <li>
+                <a th:href="@{/findSproByName}">
+                    <i class="fa fa-home fa-fw"></i>
+                    <p>主页</p>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/findSOrdByName}">
+                    <i class="fa fa-shopping-cart fa-fw"></i>
+                    <p>订单</p>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="redirect?page=service_expenses.html">
+                    <i class="fa fa-cny fa-fw"></i>
+                    <p>费用</p>
+                </a>
+            </li> -->
+            <li>
+                <a href="redirect?page=service_store.html">
+                    <i class="fa fa-institution fa-fw"></i>
+                    <p>店铺</p>
+                </a>
+            </li>
+            <li class="bg-red">
+                <!-- <a th:href="@{'/infoshow?id='+#{id}}"> -->
+                <a href="/providerInfo">
+                    <i class="fa fa-cog fa-fw"></i>
+                    <p>设置</p>
+                </a>
+            </li>
+        </ul>
+        <div class="main-details">
+            <div class="main-top">
+                <ul>
+                    <li>
+                        <i class="fa fa-home fa-fw"></i>
+                    </li>
+                    <li>设置</li>
+                </ul>
+            </div>
+            <ul class="main-tab">
+                <li class="border-red order1">服务商信息</li>
+            </ul>
+            <div class="main-content">
+                <div class="avatars">
+                <!-- <div class="proinfo"> -->
+                   <!--  <img class = "headImg2" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">             
+                    <p>更换头像</p> -->
+                    
+                     <li>
+                <p>更换头像</p>
+                    <img class = "imgshow" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">
+                </li>
+                <li>
+                    <form action="/saveUserImg2" method="post" enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="imgto"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>                       
+                </li>
+                </div>
+                <ul class="store-info">
+                    <li>
+                        <span>服务商名称</span>
+                        <input th:value="${provider.sname}" readonly/>
+                    </li>
+                    <li>
+                        <span>地区</span>
+                        <input th:value="${provider.regionId}" readonly/>
+                    </li>
+                    <li>
+                        <span>手机号</span>
+                        <input th:value="${provider.cellphone}" readonly/>
+                    </li>
+                    <li>
+                        <span>微信</span>
+                        <input th:value="${provider.weixin}" readonly/>
+                    </li>
+                    <li>
+                        <span>QQ</span>
+                        <input th:value="${provider.qq}" readonly/>
+                    </li>
+                    <li>
+                        <span>邮箱</span>
+                        <input th:value="${provider.emall}" readonly/>
+                    </li>
+                    
+                     <li><span>id</span>
+                 		 <input  name=" id"  type="text" class=" id hidePid"  value=""  readonly/>
+               		 </li>
+               		 
+                    <li>
+                       <button class="change-info">修改</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="main-sercive">银行信息。。</div>
+        </div>
+    </div>
+    <form action="/updateProInfo">
+    <input name="id" type="hidden"  th:value="${provider.id}"/> 
+    <div class="masking">
+        <div class="scroller">
+            <h3>修改服务产品</h3>
+            <ul>
+                <!-- <li>
+                    <span>头像</span>
+                    <img class = "headImg2" src="/images/default_user.png" style="width:100px;height:90px;" onerror="defaultImg(this)" alt="用户头像">
+                    <button>选择图片</button>
+                </li>
+                <li>
+                    <form action="/saveUserImg2" method="post" enctype ="multipart/form-data">
+                    <label for="file" class="btn btn-primary" style="float: left;height: 30px;width: 180px;margin-right: 20px">选择照片</label>
+    				<input  id="file" name="file" type="file" style="float: left;display:none"/>
+    					<div class="input2"></div>
+    				<input  type="submit" value="上传"  style="width:150px;height:25px;" >
+
+                    </form>                       
+                </li> -->
+                <li>
+                    <span>服务商名称</span>
+                    <input name="sname" placeholder="请输入服务名称" th:value="${provider.sname}"/>
+                </li>
+                <li>               
+                <span class="ver-top">选择地区</span>
+			   	<select id="cmbProvince"  name="cmbProvince"></select>
+				 <select id="cmbCity"  name="cmbCity" ></select>
+				  <select id="cmbArea"  name="cmbArea"></select>
+				   <script type="text/javascript">
+				   addressInit('cmbProvince', 'cmbCity', 'cmbArea', '省', '市',
+							'县');
+				</script></li>
+                <li>
+                    <span class="ver-top">手机号</span>
+                    <input name="cellphone" type="text" placeholder="请输入手机号" th:value="${provider.cellphone}"/>
+                </li>
+                <li>
+                    <span class="ver-top">微信</span>
+                    <input name="weixin" type="text" placeholder="请输入微信" th:value="${provider.weixin}"/>
+                </li>
+                <li>
+                    <span class="ver-top">QQ</span>
+                    <input name="qq" type="text" placeholder="请输入QQ" th:value="${provider.qq}"/>
+                </li>
+                <li>
+                    <span class="ver-top">邮箱</span>
+                    <input name="emall" type="text" placeholder="请输入邮箱" th:value="${provider.emall}"/>
+                </li>
+            </ul>
+            <button class="save">提交</button>
+            <button class="cancel">取消</button>
+        </div>
+        </div>
+</form>
+        <script src="./js/service_setting.js"></script>
+</body>
+
+</html>

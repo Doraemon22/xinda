@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="../js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<input type="hidden"  name="id"  th:value="${sorder.id}" />
+<h3>订单详情</h3>
+                          
+      			<li>
+                    <span>服务商产品id:</span>
+                    <input type="text" name="serviceId" th:value="${sorder.serviceId}"/>
+                </li>
+				<li>
+                    <span>服务名称:</span>
+                    <input type="text" name="serviceName" th:value="${sorder.serviceName}"/>
+                </li>
+                <li>
+                    <span>服务内容:</span>
+                    <input type="text" name="serviceInfo" style="width:300px;height:80px" th:value="${sorder.serviceInfo}"/>
+                </li>
+                <li>
+                    <span>单价:</span>
+                    <input type="text" name="unitPrice" th:value="${sorder.unitPrice}"/>
+                </li>
+                <li>
+                    <span>购买数量:</span>
+                    <input type="text" name="buyNum" th:value="${sorder.buyNum}"/>
+                </li>
+               
+           <script src="../js/service_product.js"></script>
+</body>
+
+</html>

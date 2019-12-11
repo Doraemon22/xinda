@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet"   href="./css/e-commerce_shoping-car.css">
+    
+    <script src="./js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="headder-top">
+        <div class="width1200 headder-top-content">
+         <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！<span class="user-quit"><a href="redirect?page=index" >[退出]</a></span></div>
+            <ul>
+                <li><a th:href="@{/showCart}" ><i class="fa fa-shopping-cart fa-lg"></i>
+                        购物车<span  th:text="${count}"></span>件</a></li>
+                <li>
+                <!--     <a href="redirect?page=e-commerce_order" > -->
+                  <!-- <a th:href="@{'/findOrderByNumber?id=' +1}" > -->
+                 <!--  <a th:href="@{'/findOrderByNumber}" > -->
+                  <a th:href="@{/OrderShow}" >
+                        <i class="fa fa-file-text-o fa-lg"></i> 我的订单
+                    </a>
+                </li>
+            <!--     <li>服务商入口</li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="logo-search width1200">
+        <img class="logo" src="./images/logo-blue.png" />
+        <ul class="search">
+            <li>
+                <span class="search-product font-aqua">产品</span>丨
+                <span class="search-service">服务商</span>
+            </li>
+            <li>
+                <input placeholder="搜索您需要的服务或服务商" type="text"><span class="search-btn"><i
+                        class="fa fa-search fa-2x"></i></span>
+            </li>
+            <li>
+                热门服务：<span>社保开户</span> <span>公司注册</span>
+            </li>
+        </ul>
+        <img class="tel" src="./images/xinda-tel.png" alt="">
+    </div>
+    <ul class="banner width1200">
+        <li><a th:href="@{ePageProlist}"   class="border-b">全部产品</a></li>
+    </ul>
+    <div class="line-aqua"  ></div>
+     <div class="content width1200" th:if="${count} eq '0'"  align="center">
+        <p class="product_num font-aqua">全部商品（<span th:text="${count}"></span>）</p>
+    	  <img src = "/images/car2.jpg"  style="width:400px;height:500px;" align="center" />
+    </div>
+    <div class="content width1200"  th:if="${count} gt '0'">
+        <p class="product_num font-aqua">全部商品（<span th:text="${count}"></span>）</p>
+        <hr color="#ededed" size="1">
+        <ul class="product_list_title">
+             <li>商品图片</li>
+            <li>商品信息</li>
+            <li>单价</li>
+            <li>数量</li>
+            <li>金额</li>
+            <li>操作</li>
+        </ul>
+   <ul class="merchandise  "  th:each="list :${cartList}">
+         <li>
+               <span id="cartid" class="cartid" name="cartid"  th:text="${list.id}"   style="display:none;"></span>
+                 <img th:src="@{'/proImgShow?id='+${list.product_id}}" alt="图片" style="width:80px;height:65px;"/> 
+            </li>
+            <ul class="article-info2" ><!--   -->
+               <li  th:text="${list.name}" >名称</li>
+            	<li  th:text="${list.sname}" >公司名称</li>
+            	<!-- <input id="proid"   th:value= "${list.id}" />  -->
+             <!-- 	car<input  id="ppp" class="cartid"   th:value="#{list.id}"  type="hidden"   / value="${list.id}"> -->
+            </ul>      
+             <li  id="price">¥<span id="price01" class="myPrice" name="price"  th:text="${list.mapket_price}" ></span></li>
+              <li>
+                <input type="button" name="minus" value="-" onclick="modifyPrice('minus',this);minus(this)" disabled="disabled">
+                <input type="number" name="amount"  class="myAmount" value=1>
+                <input type="button" name="plus" value="+" onclick="modifyPrice('add',this);add(this)">
+            </li>
+              <li  >
+                 ¥<span id="price0" name="prodTotalPrice" class="prodTotalPrice"  th:text="${list.mapket_price}"></span>
+              </li>
+            <li><!--自定义属性data-id  -->
+            	<button th:data-id="${list.id}"  th:onclick="deletes(this.getAttribute('data-id'))" type="button">不爱了</button>
+            </li>
+            </ul>
+           <hr />
+         <ul class="price" > 
+        	<li><span  id="totalPrice">合计金额：<labe></label></span></li> 
+            <li>
+               <a th:href="@{ePageProlist}" >继续购物</a>
+                <a href="redirect?page=e-commerce_pay" >去结算</a>
+            </li>
+        </ul> 
+
+        <input type="hidden" th:value="${count}" id="count" />
+		<input type="hidden" th:value="${pageSize}" id="pageSize" />
+		<input type="hidden" th:value="${pageStart}" id="pageStart" />
+     <div class="center" 
+    	            th:with="pageNext=${pageStart}+${pageSize},
+			       pagePre=${pageStart}-${pageSize},
+					modPage=${count}%${pageSize},
+					lastPage1=${count}-${modPage},
+					lastPage=${count}-${pageSize}">
+		<ul class="pagination">
+			<li><a th:href="@{'/showCart?pageStart=' + 0}">首页</a></li>
+			<li><span th:if="${pagePre} ge '0'"><a th:href="@{'/showCart?pageStart=' + ${pagePre}}">«</a></span></li>
+			<li><div id="mydiv"></div></li>
+			<li><span th:if="${pageNext} lt ${count}"><a th:href="@{'/showCart?pageStart=' + ${pageNext}}">»</a></span></li>
+			<li><span th:if="${modPage} eq '0'"><a th:href="@{'/showCart?pageStart=' + ${lastPage}}">末页</a></span></li>
+			<li><span th:unless="${modPage} eq '0'"><a th:href="@{'/showCart?pageStart=' + ${lastPage1}}">末页</a></span></li>
+		</ul >
+		<ul class="pagination">
+		<li>共<span th:text="${count}"></span>条记录</li>
+</ul>
+</div>
+    <script th:inline="javascript" src="./js/e-commerce_shoping-car.js"></script>
+    <script type="text/javascript">
+    totalPrice();
+</script>
+</body>
+</html>

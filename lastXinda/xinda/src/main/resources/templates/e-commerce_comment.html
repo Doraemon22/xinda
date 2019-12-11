@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/public.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/e-commerce_evaluate.css">
+
+    <script src="./js/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <div class="headder-top">
+        <div class="width1200 headder-top-content">
+         <div>尊敬的顾客<span id="euser"></span>，您好！欢饮来到信达！<a href="redirect?page=index" >[退出]</a></div>
+            <ul>
+                <li><a href="redirect?page=e-commerce_shoping-car" ><i class="fa fa-shopping-cart fa-lg"></i>
+                        购物车</a></li>
+                <li> 
+                <a th:href="@{/OrderShow}"  >
+                        <i class="fa fa-file-text-o fa-lg"></i> 我的订单
+                    </a></li>
+              <!--   <li>服务商入口</li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="logo-search width1200">
+        <img class="logo" src="./images/logo-blue.png" />
+        <ul class="search">
+            <li>
+                <span class="search-product font-aqua">产品</span>丨
+                <span class="search-service">服务商</span>
+            </li>
+            <li>
+                <input placeholder="搜索您需要的服务或服务商" type="text"><span class="search-btn"><i
+                        class="fa fa-search fa-2x"></i></span>
+            </li>
+            <li>
+                热门服务：<span>社保开户</span> <span>公司注册</span>
+            </li>
+        </ul>
+        <img class="tel" src="./images/xinda-tel.png" alt="">
+    </div>
+    <ul class="banner width1200">
+        <li><a th:href="@{ePageProlist}"  class="border-b">全部产品</a></li>
+
+    </ul>
+    <div class="line-aqua"></div>
+         
+    <div class="content width1200">
+        <div class="content-left">
+			 <div class="userinfo">
+             <img class = "imgshow"  src = "/images/user-lg.png"  style="width:100px;height:90px;" onerror="defaultImg(this)"/>
+            </div>
+            <ul class="user-action">
+                <li><a th:href="@{/OrderShow}" ><i class="fa fa-file-text-o fa-lg"></i> 我的订单</a>
+                </li>
+                <li><a class="bg-gray"  href="redirect?page=e-commerce_comment" ><i class="fa fa-pencil-square-o fa-lg"></i> 用户评价</a></li>
+                <li><a href="redirect?page=e-commerce_set" ><i class="fa fa-gear fa-lg"></i> 账户设置</a></li><!--e-commerce_set.html  -->
+            </ul>
+        </div>
+        
+
+        <div class="content-right">
+            <p class="product_num font-aqua">订单详情</p>
+            <hr color="#ededed" size="1">
+
+            <ul class="content-nav">
+                <li class="nav-active"  onclick = "noComment()">未评价</li>
+                 <li  onclick = "commented()">已评价</li>
+            </ul>
+                      <div class="list"></div><!-- 显示订单列表 -->
+         
+        </div>
+    </div>
+     
+    <div class="masking">
+        <div class="scroller">
+            <h3>评价内容</h3>
+            <textarea name="" id="content" cols="55" rows="7"></textarea><br>
+            <button class="save">评价</button>
+            <button class="cancel">取消</button>
+        </div>
+    </div>
+
+    <script src="./js/e-commerce_comment.js"></script>
+</body>
+
+</html>

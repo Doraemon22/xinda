@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="../js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<form action="/updateOSpro">
+<input type="hidden"  name="id"  th:value="${product.id}" />
+<h3>修改服务产品</h3>
+            <ul>               
+                <li>
+                    <span>服务名称</span>
+                    <input type="text" name="name" th:value="${product.name}"/>
+                </li>
+                <li>
+                    <span class="ver-top">服务说明</span>
+                    <input type="text" name="info"  style="width:300px;height:100px" th:value="${product.info}"/>
+                </li>
+                <li>
+                    <span>服务价格</span>
+                    <input type="number" name="mapketPrice" th:value="${product.mapketPrice}"/>
+                </li>
+            </ul>
+           
+           
+            <button class="save">提交</button>
+            <button class="cancel">取消</button>
+           </form>
+           <script src="../js/service_product.js"></script>
+</body>
+
+</html>

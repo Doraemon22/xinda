@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script src="../js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<input type="hidden"  name="id"  th:value="${user.id}" />
+<h3>订单详情</h3>
+                          
+      			<li>
+                    <span>登录帐号:</span>
+                    <input type="text" name="loginId" th:value="${user.loginId}"/>
+                </li>
+			<!-- 	<li>
+                    <span>密码:</span>
+                    <input type="text" name="password" th:value="${user.password}"/>
+                </li> -->
+                <li>
+                    <span>姓名:</span>
+                    <input type="text" name="name" th:value="${user.name}"/>
+                </li>
+                <li>
+                    <span>性别:</span>
+                    <input type="text" name="sex" th:value="${user.sex}"/>
+                </li>
+                <li>
+                    <span>手机号:</span>
+                    <input type="text" name="cellphone" th:value="${user.cellphone}"/>
+                </li>
+                <li>
+                    <span>注册时间:</span>
+                    <input type="text"  style="width:300px;height:25px" name="registerTime" th:value="${user.registerTime}"/>
+                </li>
+                <li>
+                    <span>邮箱:</span>
+                    <input type="text" name="email" th:value="${user.email}"/>
+                </li>
+               <li>
+                    <span>最后登录时间:</span>
+                    <input type="text" name="lastLoginTime" th:value="${user.lastLoginTime}"/>
+                </li>
+           <script src="../js/operator_user.js"></script>
+</body>
+
+</html>

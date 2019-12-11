@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinda.cn.dao.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.xinda.cn.model.xinda.Product">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+      <id column="eid" jdbcType="VARCHAR" property="eid" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="CODE" jdbcType="INTEGER" property="code" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="money" jdbcType="INTEGER" property="money" />
+    <result column="INFO" jdbcType="VARCHAR" property="info" />
+    <result column="SHOW_ORDER" jdbcType="INTEGER" property="showOrder" />
+    <result column="STYLE_ID" jdbcType="VARCHAR" property="styleId" />
+    <result column="TYPE_ID" jdbcType="VARCHAR" property="typeId" />
+    <result column="MAPKET_PRICE" jdbcType="INTEGER" property="mapketPrice" />
+    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="STORE_NUM" jdbcType="INTEGER" property="storeNum" />
+    <result column="SALE_NUM" jdbcType="INTEGER" property="saleNum" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" /> 
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xinda.cn.model.xinda.Product">
+    <result column="IMG" jdbcType="LONGVARBINARY" property="img" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, NAME, CODE, INFO, SHOW_ORDER, STYLE_ID, TYPE_ID, MAPKET_PRICE, UNIT, STORE_NUM, 
+    SALE_NUM, STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    IMG
+  </sql>
+  <!--  ==================开始============================-->
+  <!--=================迟 连表 分页模糊==================  -->
+  <!--查询用户  -->
+   <select id="selectOuserByName"  parameterType="map"   resultType="com.xinda.cn.vo.OUser">
+         SELECT e.NAME,e.CELLPHONE,e.REGISTER_TIME,e.REGION_ID,sum(b.BUY_NUM) num,sum(b.TOTAL_PRICE) money,e.id
+    FROM e_user e left join business_order b
+     on e.ID=b.E_ID
+    <if test="name !=null and name !=''">
+    			WHERE  name like concat('%',#{name},'%')
+    </if>
+    	GROUP BY e.id<!-- 按用户id分组显示记录 -->
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  
+  <select id="selectOSproByName" parameterType="map" resultMap="BaseResultMap">
+  select *  from product,provider
+    	where product.code=provider.id
+    	and name like concat('%',#{name},'%')
+    <if test="pexample.pageStart>=0">
+    	limit #{pexample.pageStart} ,#{pexample.pageSize}
+    </if>
+    <if test="pexample.orderByClause != null">
+      order by #{pexample.orderByClause}
+    </if>
+  </select>
+  <!--=================迟 连表 分页模糊end==================  -->
+  <!--  ==================肖 开始============================-->
+    <!-- <select id="selectSproByName" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    <if test="name !=null and name !=''">
+        where name like concat('%',#{name},'%') 
+    </if>
+    <if test="pexample.pageStart>=0">
+    	limit #{pexample.pageStart} ,#{pexample.pageSize}
+    </if>
+    <if test="pexample.orderByClause != null">
+      order by #{pexample.orderByClause}
+    </if>
+  </select> -->
+  
+  <select id="selectSproByName" parameterType="map" resultMap="BaseResultMap">
+  select *  from product,provider
+    	where product.code=provider.id
+    	and provider.id=#{id}
+    	<if test="name !=null and name !=''">
+        and name like concat('%',#{name},'%') 
+    </if>
+    <if test="pexample.pageStart>=0">
+    	limit #{pexample.pageStart} ,#{pexample.pageSize}
+    </if>
+    <if test="pexample.orderByClause != null">
+      order by #{pexample.orderByClause}
+    </if>
+  </select>
+  
+     <select id="getCount" parameterType="map" resultType="java.lang.Long">
+    select count(*) from product
+    <if  test="name !=null and name!=''">
+    where name like concat('%',#{name},'%')
+    </if>
+  </select>
+    <!-- 按id删除服务产品 -->
+  <delete id="deleteByProKey" parameterType="java.lang.String">
+    delete from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+    <!-- 查询出要修改的服务商产品 -->
+  <select id="selectSproById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <!-- 修改服务商产品信息 -->
+  <update id="updateSproById" parameterType="com.xinda.cn.model.xinda.Product">
+    update product
+    set NAME = #{name,jdbcType=VARCHAR},
+      INFO = #{info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{mapketPrice,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      STORE_NUM = #{storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 上传图片 -->
+   <update id="saveUserImg" parameterType="com.xinda.cn.model.xinda.Product">
+    update product set IMG = #{img} where id = #{id}
+  </update>
+  <!--  ==================肖  结束============================-->
+
+  <!--=================分页显示电子商务页面产品    查询map,用#取值，另外需要   对象.属性     $可以直接取example类 的属性值==================  -->
+    <select id="showPageEpro"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  <!--为了产品图片  -->
+   <select id="selectByPrimaryKey2"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code  and p1.id=#{id}
+            
+  </select>
+  <!--  降序-->
+     <select id="showPriceDescPro"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code
+    	order by mapket_price DESC
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  <!--升序  -->
+     <select id="showPriceAscPro"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code
+    	order by mapket_price ASC
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  <!--=================模糊分页2   服务商名即公司名==================  -->
+    <select id="selectEproByProviderName"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code
+    	
+    <if test="sname !=null and sname !=''">
+    		and  sname like concat('%',#{sname},'%')
+    </if>
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+  <!--=================模糊分页  (产品名查询）    查询map,用#取值，另外需要   对象.属性     $可以直接取example类 的属性值==================  -->
+    <select id="selectEproByname"  parameterType="map"   resultType="com.xinda.cn.vo.Epro">
+      select   p1.id,name,sname,info,img,mapket_price
+    from product p1,provider p
+    	where p.id=code
+    	
+    <if test="name !=null and name !=''">
+    		and  name like concat('%',#{name},'%')
+    </if>
+    <if test="productExample.orderByClause != null">
+      order by #{productExample.orderByClause}
+    </if>
+     <if test="productExample.pageStart>=0">
+	limit #{productExample.pageStart},#{productExample.pageSize}	
+    </if>
+  </select>
+
+  
+    <select id="searchCount"  parameterType="map"  resultType="java.lang.Long">
+    select count(*) from product
+    <if test="name !=null and name !=''">
+    		where name like concat('%',#{name},'%')
+    </if>
+  </select>
+      <select id="searchCountProvider"  parameterType="map"  resultType="java.lang.Long">
+         	 SELECT    COUNT(*)	
+        FROM product p1,provider p
+    	WHERE p.id=CODE <!-- AND sname LIKE CONCAT('%',"熊猫",'%') -->
+   
+    <if test="sname !=null and sname !=''">
+    		and sname like concat('%',#{sname},'%')
+    </if>
+  </select>
+  <!--  =====================分页end===================-->
+
+  
+  <!--====================结束=============================  -->
+  <select id="selectByExampleWithBLOBs" parameterType="com.xinda.cn.model.xinda.ProductExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xinda.cn.model.xinda.ProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xinda.cn.model.xinda.ProductExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xinda.cn.model.xinda.Product">
+    insert into product (ID, NAME, CODE, 
+      INFO, SHOW_ORDER, STYLE_ID, 
+      TYPE_ID, MAPKET_PRICE, UNIT, 
+      STORE_NUM, SALE_NUM, STATUS, 
+      IMG)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=INTEGER}, 
+      #{info,jdbcType=VARCHAR}, #{showOrder,jdbcType=INTEGER}, #{styleId,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR}, #{mapketPrice,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{storeNum,jdbcType=INTEGER}, #{saleNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{img,jdbcType=LONGVARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.cn.model.xinda.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="info != null">
+        INFO,
+      </if>
+      <if test="showOrder != null">
+        SHOW_ORDER,
+      </if>
+      <if test="styleId != null">
+        STYLE_ID,
+      </if>
+      <if test="typeId != null">
+        TYPE_ID,
+      </if>
+      <if test="mapketPrice != null">
+        MAPKET_PRICE,
+      </if>
+      <if test="unit != null">
+        UNIT,
+      </if>
+      <if test="storeNum != null">
+        STORE_NUM,
+      </if>
+      <if test="saleNum != null">
+        SALE_NUM,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="img != null">
+        IMG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="showOrder != null">
+        #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="styleId != null">
+        #{styleId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="mapketPrice != null">
+        #{mapketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNum != null">
+        #{storeNum,jdbcType=INTEGER},
+      </if>
+      <if test="saleNum != null">
+        #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xinda.cn.model.xinda.ProductExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        CODE = #{record.code,jdbcType=INTEGER},
+      </if>
+      <if test="record.info != null">
+        INFO = #{record.info,jdbcType=VARCHAR},
+      </if>
+      <if test="record.showOrder != null">
+        SHOW_ORDER = #{record.showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.styleId != null">
+        STYLE_ID = #{record.styleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeId != null">
+        TYPE_ID = #{record.typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mapketPrice != null">
+        MAPKET_PRICE = #{record.mapketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.unit != null">
+        UNIT = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storeNum != null">
+        STORE_NUM = #{record.storeNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.saleNum != null">
+        SALE_NUM = #{record.saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.img != null">
+        IMG = #{record.img,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update product
+    set ID = #{record.id,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      CODE = #{record.code,jdbcType=INTEGER},
+      INFO = #{record.info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{record.showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{record.styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{record.typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{record.mapketPrice,jdbcType=INTEGER},
+      UNIT = #{record.unit,jdbcType=VARCHAR},
+      STORE_NUM = #{record.storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{record.saleNum,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      IMG = #{record.img,jdbcType=LONGVARBINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set ID = #{record.id,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      CODE = #{record.code,jdbcType=INTEGER},
+      INFO = #{record.info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{record.showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{record.styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{record.typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{record.mapketPrice,jdbcType=INTEGER},
+      UNIT = #{record.unit,jdbcType=VARCHAR},
+      STORE_NUM = #{record.storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{record.saleNum,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.cn.model.xinda.Product">
+    update product
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        CODE = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        INFO = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="showOrder != null">
+        SHOW_ORDER = #{showOrder,jdbcType=INTEGER},
+      </if>
+      <if test="styleId != null">
+        STYLE_ID = #{styleId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="mapketPrice != null">
+        MAPKET_PRICE = #{mapketPrice,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        UNIT = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNum != null">
+        STORE_NUM = #{storeNum,jdbcType=INTEGER},
+      </if>
+      <if test="saleNum != null">
+        SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="img != null">
+        IMG = #{img,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xinda.cn.model.xinda.Product">
+    update product
+    set NAME = #{name,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=INTEGER},
+      INFO = #{info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{mapketPrice,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      STORE_NUM = #{storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      IMG = #{img,jdbcType=LONGVARBINARY}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xinda.cn.model.xinda.Product">
+    update product
+    set NAME = #{name,jdbcType=VARCHAR},
+      CODE = #{code,jdbcType=INTEGER},
+      INFO = #{info,jdbcType=VARCHAR},
+      SHOW_ORDER = #{showOrder,jdbcType=INTEGER},
+      STYLE_ID = #{styleId,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      MAPKET_PRICE = #{mapketPrice,jdbcType=INTEGER},
+      UNIT = #{unit,jdbcType=VARCHAR},
+      STORE_NUM = #{storeNum,jdbcType=INTEGER},
+      SALE_NUM = #{saleNum,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
